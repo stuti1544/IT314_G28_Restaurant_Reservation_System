@@ -1,0 +1,20 @@
+.reviews-section {
+    background: rgba(255, 255, 255, 0.8); /* Light background for contrast */
+    padding: 20px;
+    margin: 40px 0; /* Space above and below the reviews section */
+    border-radius: 10px; /* Rounded corners */
+}
+
+.review-card {
+    text-align: center; /* Center text */
+    padding: 20px;
+}
+
+.review-card p {
+    font-size: 1.2em; /* Font size for review text */
+}
+
+.review-card h4 {
+    margin-top: 10px; /* Space above the name */
+    color: #86ba4a; /* Color for the name */
+}
