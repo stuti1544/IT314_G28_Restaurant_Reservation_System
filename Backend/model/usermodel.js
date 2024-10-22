@@ -25,7 +25,7 @@ const userSchema = new Schema({
             validator: function (v) {
                 return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/.test(v);
             },
-            message: "Password must be of minimum length 6 and must contain at least one uppercase letter, one number, and one special character"
+            message: "Password must be of minimum length 6 and must contain at least one uppercase letter, one lowercase letter, one number, and one special character"
         }
     },
 

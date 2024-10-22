@@ -19,6 +19,7 @@ passport.use(new googglestrategy({
     async (accessToken, refreshToken, profile, done)=>{
         try {
             const email = profile.emails[0].value;
+            const userType = profile._json.state;
             const user = await detail.findOne({email});
             if(!user)
                 return done(null, false, { message: 'User not registered' });            
