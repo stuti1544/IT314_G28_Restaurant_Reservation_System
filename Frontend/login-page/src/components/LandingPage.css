@@ -1,0 +1,91 @@
+/* src/components/LandingPage.css */
+.landing-page {
+    position: relative; /* Position relative for children */
+    padding: 50px; /* Adjust padding as needed */
+    color: #333; /* Text color */
+    text-align: center; /* Center align text */
+    background-image: url('images/BGimage.png');
+    background-size: 90%; /* Background image size */
+    background-position: center; /* Center the image */
+    background-repeat: repeat; /* Prevent the image from repeating */
+}
+
+.landing-page h1 {
+    font-size: 2.5em; /* Adjust heading size */
+}
+
+.landing-page p {
+    font-size: 1.2em; /* Adjust paragraph size */
+}
+
+button {
+    padding: 10px 20px; /* Button padding */
+    background-color: #86ba4a; /* Button color */
+    color: white; /* Text color */
+    border: none; /* No border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    font-size: 1em; /* Font size */
+    
+}
+
+button:hover {
+    background-color: #ef5427; /* Change color on hover */
+}
+
+.content {
+    margin-top: 80px; /* Space for fixed navbar */
+    width: 100%; /* Full width */
+}
+
+.section {
+    font-family: 'Montserrat';
+    display: flex;
+    align-items: center;
+    margin: 40px 0; /* Space between sections */
+    padding: 20px; /* Padding inside each section */
+}
+
+.text-card {
+    flex: 1; /* Take half of the space */
+    background: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    margin: 10px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: left;
+}
+
+.image-container {
+    flex: 1; /* Take half of the space */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-height: 300px; /* Limit the height of the image container */
+}
+
+.image-container img {
+    max-width: 50%; /* Ensure the image doesn't exceed 80% of the container */
+    max-height: 50%; /* Ensure the image height does not exceed the container */
+    object-fit: contain; /* Adjust the image to fit within its container */
+    border-radius: 10px; /* Optional: Round the image corners */
+}
+
+h2 {
+    font-size: 2em; /* Adjusted font size */
+}
+
+p {
+    font-size: 1em; /* Adjusted font size */
+    margin-top: 10px;
+}
+
+.img-left {
+    flex-direction: row; /* Text on left, image on right */
+}
+
+.img-right {
+    flex-direction: row-reverse; /* Image on left, text on right */
+}
