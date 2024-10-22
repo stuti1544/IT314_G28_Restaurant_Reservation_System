@@ -1,4 +1,3 @@
-/* src/SignupForm.css */
 .signup-form-container {
     display: flex;
     flex-direction: column;
@@ -44,4 +43,14 @@
 
 .signup-form p {
     margin-top: 10px; /* Margin for the paragraph */
+}
+
+.error-message {
+    color: red; /* Red color for error message */
+    font-weight: bold; /* Make the error message bold */
+}
+
+.success-message {
+    color: green; /* Green color for success message */
+    font-weight: bold; /* Make the success message bold */
 }
