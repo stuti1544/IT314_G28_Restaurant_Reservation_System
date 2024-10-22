@@ -4,7 +4,7 @@ const nodemailer = require('nodemailer');
 const randomstring = require('randomstring');
 const bcrypt = require('bcrypt');
 const Token = require('../model/tokenmodel');
-
+require('dotenv').config();
 const signup_post = async (req, res) => {
     try {
         const { name, email, password, confirmPassword, isOwner } = req.body;
@@ -23,7 +23,7 @@ const signup_post = async (req, res) => {
             isOwner: isOwner
         })
         await newUser.save();
-        res.status(200).json({ message: "User created successfully", userId: newUser._id, owner:newUser.isOwner })
+        res.status(200).json({ message: "User created successfully", userId: newUser._id, owner: newUser.isOwner })
 
     } catch (error) {
         console.log(error.message);
@@ -34,10 +34,13 @@ const signup_post = async (req, res) => {
 
 const login_post = async (req, res) => {
     try {
-        const { email, password } = req.body;
+        const { email, password, isOwner } = req.body;
         const data = await usermodel.findOne({ email: email })
         if (!data) {
             return res.status(401).json({ message: "Enter Valid Email" });
+        }
+        if (data.isOwner != isOwner) {
+            return res.status(401).json({ message: "Invalid User" });
         }
         const isMatch = await bcrypt.compare(password, data.password);
         if (!isMatch) {
@@ -51,7 +54,7 @@ const login_post = async (req, res) => {
         res.status(200).json({ message: "User logged in successfully", userId: data._id, token: token })
     } catch (error) {
         console.log(error.message);
-        res.status(error.code).json({ message: error.message });
+        res.status(400).json({ message: error.message });
     }
 
 }
@@ -74,7 +77,8 @@ const sendresetpasswordmail = async (name, email, token) => {
             from: process.env.email,
             to: email,
             subject: 'For reset password',
-            html: '<p>Hii, ' + name + ', Plesae copy the link and <a href="http://localhost:5173/auth/reset-password/' + token + '"> reset your password </a>'
+            html: `<p>Hi, ${name}, please copy the link and <a href="${process.env.FRONTEND_URL}/auth/reset-password/${token}">reset your password</a>.</p>`
+
         }
 
         transporter.sendMail(mailOptions, function (error, info) {
@@ -116,8 +120,7 @@ const forgotPassword = async (req, res) => {
 
     } catch (error) {
         console.log(error);
-        const error_message = errorhandel(error);
-        res.status(401).json({ message: error_message });
+        res.status(401).json({ message: error.message });
     }
 
 }
@@ -148,8 +151,7 @@ const resetPassword = async (req, res) => {
 
     } catch (error) {
         console.log(error);
-        const error_message = errorhandel(error);
-        res.status(401).json({ message: error_message });
+        res.status(401).json({ message: error.message });
     }
 }
 
