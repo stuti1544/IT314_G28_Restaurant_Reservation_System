@@ -1,5 +1,13 @@
 const restaurant = require('../model/restaurantmodel');
+const mongoose = require('mongoose');
 
+let gfsBucket;
+const conn = mongoose.connection;
+conn.once('open', () => {
+    gfsBucket = new mongoose.mongo.GridFSBucket(conn.db, {
+        bucketName: 'uploads' 
+    });
+});
 const addRestaurant = async(req,res)=>{
     try {
         const { name, location, capacity, cuisines, openingTime, closingTime, phoneNumber } = req.body;
@@ -88,27 +96,43 @@ const updateRestaurant = async(req,res)=>{
     }
 }
 
-const deleteRestaurant = async(req,res)=>{
+const deleteRestaurant = async (req, res) => {
     try {
         const { id } = req.params;
-        const restaurant = await restaurant.findOne({ _id: id, ownerId: req.user._id });
-        if (!restaurant) {
+        const Restaurant = await restaurant.findOne({ _id: id, ownerId: req.user._id });
+        if (!Restaurant) {
             return res.status(404).json({ message: 'Restaurant not found or unauthorized access' });
         }
-        if (restaurant.image) {
-            fs.unlink(restaurant.image, (err) => {
-                if (err) console.error(`Failed to delete image file: ${err.message}`);
-            });
+
+        // Delete images from GridFS
+        const deleteImageByFilename = async (filename) => {
+            try {
+                const file = await gfsBucket.find({ filename }).toArray();
+                if (file.length > 0) {
+                    await gfsBucket.delete(file[0]._id);
+                } else {
+                    console.log(`File not found for filename: ${filename}`);
+                }
+            } catch (error) {
+                console.log(`Failed to delete image: ${error.message}`);
+            }
+        };
+
+        if (Restaurant.image) {
+            for (const filename of Restaurant.image) {
+                await deleteImageByFilename(filename);
+            }
         }
-        if (restaurant.menuImage) {
-            fs.unlink(restaurant.menuImage, (err) => {
-                if (err) console.error(`Failed to delete menu image file: ${err.message}`);
-            });
+        if (Restaurant.menuImage) {
+            for (const filename of Restaurant.menuImage) {
+                await deleteImageByFilename(filename);
+            }
         }
-        await restaurant.remove();
+
+        await Restaurant.deleteOne();
         res.status(200).json({ message: 'Restaurant deleted successfully' });
     } catch (error) {
-        console.error(error);
+        console.log(error);
         res.status(401).json({ message: 'Failed to delete restaurant', error: error.message });
     }
 }
