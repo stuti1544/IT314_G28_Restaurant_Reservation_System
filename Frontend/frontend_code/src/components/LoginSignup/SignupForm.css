@@ -1,4 +1,9 @@
 /* src/SignupForm.css */
+
+.body{
+    font-family: 'Montserrat';
+}
+
 .signup-form-container {
     display: flex;
     flex-direction: column;
@@ -12,7 +17,6 @@
 
 .signup-form-container h2 {
     margin-bottom: 20px;
-    font-family: 'Rochester', sans-serif; /* Use local font */
 }
 
 .signup-form {

@@ -39,7 +39,10 @@ const Navbar = () => {
       </div>
       <ul className="nav-links">
         <li>
-          <button onClick={handleGetStarted} className="button">Get Started</button>
+        <button onClick={handleGetStarted} className="button" style={{ color: 'white' }}>
+    Get Started
+</button>
+
         </li>
       </ul>
     </nav>
