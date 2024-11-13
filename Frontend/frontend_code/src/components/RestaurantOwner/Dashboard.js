@@ -1,29 +1,46 @@
 import React, { useState } from 'react';
 import Sidebar from './Sidebar';
 import RestaurantCard from './RestaurantCard';
+import RestaurantModal from './RestaurantModal';
 import styles from './Dashboard.module.css';
+import gourmetGrubImg from './images/gourmetgrub.jpg';
+import spiceSymphonyImg from './images/indian.jpg';
+import sushiCentralImg from './images/sushi.jpg';
+import tacoTownImg from './images/taco.jpg';
 
 const Dashboard = () => {
-  // Restaurant data with dynamic attributes
   const initialRestaurants = [
-    { id: 1, name: 'Gourmet Grub', cuisine: 'Italian', image: 'path/to/image1.jpg' },
-    { id: 2, name: 'Spice Symphony', cuisine: 'Indian', image: 'path/to/image2.jpg' },
-    { id: 3, name: 'Sushi Central', cuisine: 'Japanese', image: 'path/to/image3.jpg' },
-    { id: 4, name: 'Taco Town', cuisine: 'Mexican', image: 'path/to/image4.jpg' },
-];
+    { id: 1, name: 'Gourmet Grub', cuisine: 'Italian', image: gourmetGrubImg, location: '1234 Food St, Rome, Italy' },
+    { id: 2, name: 'Spice Symphony', cuisine: 'Indian', image: spiceSymphonyImg, location: '4567 Spice Ave, New Delhi, India' },
+    { id: 3, name: 'Sushi Central', cuisine: 'Japanese', image: sushiCentralImg, location: '8901 Sushi Rd, Tokyo, Japan' },
+    { id: 4, name: 'Taco Town', cuisine: 'Mexican', image: tacoTownImg, location: '2345 Taco Blvd, Mexico City, Mexico' },
+  ];
 
-
-  const [restaurants, setRestaurants] = useState(initialRestaurants);
+  const [restaurants] = useState(initialRestaurants);
   const [searchQuery, setSearchQuery] = useState('');
   const [filterCuisine, setFilterCuisine] = useState('');
+  const [selectedRestaurant, setSelectedRestaurant] = useState(null);
+  const [action, setAction] = useState(''); // To store the action (edit/manage)
 
-  // Filtered restaurants based on search and cuisine filter
-  const filteredRestaurants = restaurants.filter((restaurant) => {
-    return (
-      restaurant.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
-      restaurant.cuisine.toLowerCase().includes(filterCuisine.toLowerCase())
-    );
-  });
+  // Filter restaurants based on search and cuisine
+  const filteredRestaurants = restaurants.filter((restaurant) =>
+    restaurant.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
+    restaurant.cuisine.toLowerCase().includes(filterCuisine.toLowerCase())
+  );
+
+  const handleCardClick = (restaurant) => {
+    setSelectedRestaurant(restaurant);
+  };
+
+  const handleButtonClick = (actionType) => {
+    setAction(actionType); // Store the action ('edit' or 'manage')
+    console.log(`${actionType} clicked`);
+    // Add your logic for edit/manage here, like opening a different view or navigating
+  };
+
+  const closeModal = () => {
+    setSelectedRestaurant(null);
+  };
 
   return (
     <div className={styles.dashboard}>
@@ -57,12 +74,18 @@ const Dashboard = () => {
                 key={restaurant.id}
                 name={restaurant.name}
                 cuisine={restaurant.cuisine}
+                image={restaurant.image}
+                onCardClick={() => handleCardClick(restaurant)}
+                onButtonClick={handleButtonClick}
               />
             ))
           ) : (
             <p>No restaurants found.</p>
           )}
         </div>
+
+        {/* Modal for restaurant details */}
+        <RestaurantModal restaurant={selectedRestaurant} onClose={closeModal} />
       </div>
     </div>
   );
