@@ -1,0 +1,68 @@
+/* Basic page layout */
+.login-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh; /* Keep full viewport height */
+    font-family: 'Poppins', sans-serif;
+    background: url('images/BGimage.png') no-repeat center center fixed;
+    background-size: cover; /* Use cover for a more modern look */
+    position: relative;
+    color: #333; /* Subtle default text color */
+    overflow: hidden; /* Prevents scroll bars from appearing */
+}
+
+/* Glass-like card with a more cohesive design */
+.login-card {
+    background: rgba(255, 255, 255, 0.2); /* Increased transparency for a glass effect */
+    border-radius: 16px; /* Slightly larger radius for a softer look */
+    padding: 20px; /* Reduced padding for a smaller card */
+    width: 90%; /* Responsive width */
+    max-width: 320px; /* Decreased max width to make the card smaller */
+    text-align: center;
+    color: #333;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* Softer shadow with more depth */
+}
+
+/* Heading style */
+.login-card h2 {
+    margin-bottom: 15px; /* Reduced margin for better spacing */
+    font-family: 'Montserrat', sans-serif; /* Modern font choice */
+}
+
+/* Form styling */
+.login-form {
+    display: flex;
+    flex-direction: column;
+    width: 100%; /* Use full width for responsiveness */
+}
+
+/* Input fields styling */
+.login-form input {
+    margin: 10px 0; /* Margin for spacing between input fields */
+    padding: 10px; /* Padding inside input fields */
+    border: 1px solid #ccc; /* Light border for input fields */
+    border-radius: 5px; /* Rounded corners */
+}
+
+/* Button styling */
+.login-form button {
+    background-color: #86ba4a; /* Button color */
+    color: white; /* Button text color */
+    border: none; /* Remove default border */
+    border-radius: 5px; /* Rounded corners for consistency */
+    padding: 12px; /* Padding for the button */
+    cursor: pointer; /* Pointer cursor on hover */
+    font-size: 1rem; /* Consistent font size for readability */
+}
+
+/* Button hover effect */
+.login-form button:hover {
+    background-color: #ef5427; /* Change color on hover */
+}
+
+/* Paragraph styling within the form */
+.login-form p {
+    margin-top: 10px; /* Margin for the paragraph */
+}
