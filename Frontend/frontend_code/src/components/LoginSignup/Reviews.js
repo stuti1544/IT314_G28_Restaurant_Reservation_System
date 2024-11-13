@@ -5,23 +5,28 @@ import './Reviews.css';
 const reviews = [
   {
     name: "Alice Johnson",
-    review: "The food was amazing! I loved the ambiance and the staff was very friendly.",
+    review: "Booking a table was so easy! The restaurant's ambiance matched exactly what I was looking for. Highly recommended.",
+    image: "/path/to/alice.jpg", // Add path to circular image
   },
   {
     name: "John Smith",
-    review: "An excellent dining experience! The menu had a great variety and everything we ordered was delicious.",
+    review: "Fantastic experience! The reservation system was quick, and I even got a birthday discount!",
+    image: "/path/to/john.jpg",
   },
   {
     name: "Sarah Williams",
-    review: "Highly recommend! The desserts were to die for, and the service was top-notch.",
+    review: "Loved the simplicity of the booking process. Got instant confirmation and the table was ready when I arrived.",
+    image: "/path/to/sarah.jpg",
   },
   {
     name: "Michael Brown",
-    review: "A hidden gem! I will definitely be coming back for more.",
+    review: "Effortless reservations! I could see real-time availability, which saved us so much time.",
+    image: "/path/to/michael.jpg",
   },
   {
     name: "Emily Davis",
-    review: "Best restaurant in town! Every dish was prepared perfectly.",
+    review: "Amazing service! Easy booking and the reminder notifications were very helpful.",
+    image: "/path/to/emily.jpg",
   },
 ];
 
@@ -32,8 +37,8 @@ const Reviews = () => {
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
-    autoplay: true, // Enable autoplay
-    autoplaySpeed: 1000, // Time between slides (in milliseconds)
+    autoplay: true,
+    autoplaySpeed: 1000,
   };
 
   return (
@@ -42,6 +47,7 @@ const Reviews = () => {
       <Slider {...settings}>
         {reviews.map((review, index) => (
           <div key={index} className="review-card">
+            <img src={review.image} alt={review.name} className="review-image" />
             <p>{`"${review.review}"`}</p>
             <h4>- {review.name}</h4>
           </div>

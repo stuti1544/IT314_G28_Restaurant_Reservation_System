@@ -1,20 +1,55 @@
 .reviews-section {
-    background: rgba(255, 255, 255, 0.8); /* Light background for contrast */
+    background: rgba(255, 255, 255, 0.9); /* Slightly transparent white background */
     padding: 20px;
-    margin: 40px 0; /* Space above and below the reviews section */
-    border-radius: 10px; /* Rounded corners */
+    margin: 40px auto; /* Center the section */
+    border-radius: 12px;
+    max-width: 600px; /* Limit width of the section */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+    border: 1px solid #ef5427; /* Accent border */
 }
 
 .review-card {
-    text-align: center; /* Center text */
+    text-align: center;
     padding: 20px;
+    max-width: 500px; /* Limit width of each review card */
+    margin: 0 auto; /* Center each review card */
+    overflow-wrap: break-word; /* Prevent text overflow */
+    word-wrap: break-word;
+    color: #333; /* Darker text for readability */
 }
 
 .review-card p {
-    font-size: 1.2em; /* Font size for review text */
+    font-size: 1.1em;
+    line-height: 1.5;
+    margin: 15px auto;
+    max-width: 90%; /* Limit width of review text */
+    color: #333; /* Dark gray for text */
 }
 
 .review-card h4 {
-    margin-top: 10px; /* Space above the name */
-    color: #86ba4a; /* Color for the name */
+    margin-top: 10px;
+    color: #ef5427; /* Accent color for names */
+}
+
+/* Style for circular review images */
+.review-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%; /* Circular image */
+    margin: 0 auto 15px; /* Center and space below */
+    object-fit: cover;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Shadow for image */
+    border: 2px solid #86ba4a; /* Green border around image */
+}
+
+/* Mobile responsiveness */
+@media (max-width: 600px) {
+    .reviews-section {
+        padding: 15px;
+        max-width: 90%; /* Allow section to adjust on smaller screens */
+    }
+    
+    .review-card p {
+        font-size: 1em; /* Adjust font size for smaller screens */
+    }
 }
