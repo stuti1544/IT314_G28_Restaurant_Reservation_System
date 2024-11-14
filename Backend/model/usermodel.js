@@ -6,7 +6,13 @@ const validator = require('validator')
 const userSchema = new Schema({
     name:{
         type:String,
-        required:[true,"Enter name"]
+        required:[true,"Enter name"],
+        validate: {
+            validator: function (v) {
+                return /^[A-Za-z]{2,20}$/.test(v);
+            },
+            message: "Name must be alphabetical and a minimum of 2 characters and a maximum of 20"
+        }
     },
     email:{
         type:String,
@@ -27,6 +33,10 @@ const userSchema = new Schema({
             },
             message: "Password must be of minimum length 6 and must contain at least one uppercase letter, one lowercase letter, one number, and one special character"
         }
+    },
+    confirmed:{
+        type:Boolean,
+        default:false
     },
 
     isOwner:{
