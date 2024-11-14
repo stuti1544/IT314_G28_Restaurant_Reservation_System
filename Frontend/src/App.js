@@ -13,6 +13,9 @@ const App = () => {
         {/* Default landing page */}
         <Route path="/" element={<LandingPage />} />
 
+        {/* Login Route with Token as Parameter */}
+        <Route path="/login/:token" element={<LoginPage />} />
+
         {/* Login page */}
         <Route path="/login" element={<LoginPage />} />
 

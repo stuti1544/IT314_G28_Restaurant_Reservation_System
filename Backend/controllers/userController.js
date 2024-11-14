@@ -3,14 +3,39 @@ const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 const randomstring = require('randomstring');
 const bcrypt = require('bcrypt');
+const dns = require('dns');
 const Token = require('../model/tokenmodel');
+const { EmailVerificationTemplate, ResetPasswordTemplate } = require('../templates/templates.js');
 require('dotenv').config();
+
+const errorHandle = (err) => {
+    return err.message || 'An unknown error occurred';
+};
+
+function isDomainValid(email) {
+    return new Promise((resolve) => {
+        const domain = email.split('@')[1];
+        dns.resolveMx(domain, (error, addresses) => {
+            if (error || !addresses || addresses.length === 0) {
+                resolve(false);  // No valid MX record
+            } else {
+                resolve(true);  // Valid MX record found
+            }
+        });
+    });
+}
+
 const signup_post = async (req, res) => {
     try {
         const { name, email, password, confirmPassword, isOwner } = req.body;
         const user = await usermodel.findOne({ email: email });
         if (user) {
             return res.status(409).json({ message: "User already exists" })
+        }
+        // Validate email domain
+        const domainValid = await isDomainValid(email);
+        if (!domainValid) {
+            return res.status(400).json({ message: "Invalid email domain" });
         }
         if (password !== confirmPassword) {
             return res.status(401).json({ message: "Password not matching" })
@@ -20,9 +45,19 @@ const signup_post = async (req, res) => {
             name: name,
             email: email,
             password: password,
+            confirmed: false,
             isOwner: isOwner
         })
         await newUser.save();
+
+        // Generate a confirmation token
+        const confirmationToken = jwt.sign({ _id: newUser._id }, process.env.JWT_SECRET, {
+            expiresIn: "1h"
+        });
+
+        // Send confirmation email
+        await sendConfirmationEmail(name, email, confirmationToken);
+
         res.status(200).json({ message: "User created successfully", userId: newUser._id, owner: newUser.isOwner })
 
     } catch (error) {
@@ -31,6 +66,63 @@ const signup_post = async (req, res) => {
     }
 
 }
+
+const sendConfirmationEmail = async (name, email, token) => {
+    try {
+        const transporter = nodemailer.createTransport({
+            host: 'smtp.gmail.com',
+            port: 465,
+            secure: true,
+            auth: {
+                user: process.env.email,
+                pass: process.env.password
+            }
+        });
+
+        const mailOptions = {
+            from: process.env.email,
+            to: email,
+            subject: 'Account Confirmation',
+            html: EmailVerificationTemplate.replace("{Username}",name).replace("{url}",`${process.env.FRONTEND_URL}/login/${token}`)
+        };
+
+        await transporter.sendMail(mailOptions);
+        console.log(`Confirmation email sent to ${email}`);
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+const confirmEmail = async (req, res) => {
+    try {
+        const token = req.params.token;
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const user = await usermodel.findOne({ _id: decoded._id });
+
+        if (!user) {
+            return res.status(400).json({ message: "Invalid token or user does not exist" });
+        }
+
+        if (user.confirmed) {
+            return res.status(400).json({ message: "User already confirmed" });
+        }
+
+        user.confirmed = true;
+        await user.save();
+
+        // Generate a login token
+        const loginToken = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
+            expiresIn: "24h"
+        });
+
+        res.setHeader('Authorization', 'Bearer ' + loginToken);
+        res.redirect(`${process.env.FRONTEND_URL}/dashboard?token=${loginToken}`);
+    } catch (error) {
+        console.log(error.message);
+        res.status(400).json({ message: "Email confirmation failed" });
+    }
+};
+
 
 const login_post = async (req, res) => {
     try {
@@ -77,7 +169,7 @@ const sendresetpasswordmail = async (name, email, token) => {
             from: process.env.email,
             to: email,
             subject: 'For reset password',
-            html: `<p>Hi, ${name}, please copy the link and <a href="${process.env.FRONTEND_URL}/auth/reset-password/${token}">reset your password</a>.</p>`
+            html: ResetPasswordTemplate.replace("{Username}",name).replace("{url}",`${process.env.FRONTEND_URL}/auth/reset-password/${token}`)
 
         }
 
@@ -91,7 +183,7 @@ const sendresetpasswordmail = async (name, email, token) => {
         })
     } catch (err) {
         console.log(err);
-        const error_message = errorhandel(err);
+        const error_message = errorHandle(err); // Use the correct function name
         res.status(401).json({ message: error_message });
     }
 }
@@ -155,4 +247,4 @@ const resetPassword = async (req, res) => {
     }
 }
 
-module.exports = { signup_post, login_post, forgotPassword, resetPassword };
+module.exports = { signup_post, login_post, forgotPassword, resetPassword, confirmEmail };
