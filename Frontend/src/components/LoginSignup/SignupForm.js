@@ -58,7 +58,7 @@ const SignupForm = ({ userType }) => {
     
   };
 
-  return isSubmitted ? (
+  return isSubmitted && successMessage ? (
     <div className="verify-email-container">
       <h2>Verify Your Email</h2>
       <p>Click on the link sent to {email} to verify your account.</p>

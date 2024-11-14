@@ -9,7 +9,7 @@ router.post('/signup',userController.signup_post);
 router.post('/login',userController.login_post);
 router.post('/forgot-password', userController.forgotPassword);
 router.post('/reset-password/:token', userController.resetPassword);
-router.get('/auth/confirm-email/:token', userController.confirmEmail);
+router.get('/confirm-email/:token', userController.confirmEmail);
 router.get('/google', (req, res, next) => {
     const userType = req.query.type;
     passport.authenticate('google', {

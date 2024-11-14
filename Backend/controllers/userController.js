@@ -45,7 +45,6 @@ const signup_post = async (req, res) => {
             name: name,
             email: email,
             password: password,
-            confirmed: false,
             isOwner: isOwner
         })
         await newUser.save();
@@ -83,9 +82,9 @@ const sendConfirmationEmail = async (name, email, token) => {
             from: process.env.email,
             to: email,
             subject: 'Account Confirmation',
-            html: EmailVerificationTemplate.replace("{Username}",name).replace("{url}",`${process.env.FRONTEND_URL}/login/${token}`)
+            html: EmailVerificationTemplate.replace("{Username}",name).replace("{url}",`${process.env.BACKEND_URL}/auth/confirm-email/${token}`)
         };
-
+        
         await transporter.sendMail(mailOptions);
         console.log(`Confirmation email sent to ${email}`);
     } catch (error) {
@@ -98,25 +97,12 @@ const confirmEmail = async (req, res) => {
         const token = req.params.token;
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         const user = await usermodel.findOne({ _id: decoded._id });
-
         if (!user) {
             return res.status(400).json({ message: "Invalid token or user does not exist" });
         }
 
-        if (user.confirmed) {
-            return res.status(400).json({ message: "User already confirmed" });
-        }
-
-        user.confirmed = true;
-        await user.save();
-
-        // Generate a login token
-        const loginToken = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
-            expiresIn: "24h"
-        });
-
-        res.setHeader('Authorization', 'Bearer ' + loginToken);
-        res.redirect(`${process.env.FRONTEND_URL}/dashboard?token=${loginToken}`);
+        const userType = user.isOwner === true ? 'owner' : 'customer';
+        res.redirect(`${process.env.FRONTEND_URL}/login?type=${userType}`);
     } catch (error) {
         console.log(error.message);
         res.status(400).json({ message: "Email confirmation failed" });
@@ -190,13 +176,15 @@ const sendresetpasswordmail = async (name, email, token) => {
 
 const forgotPassword = async (req, res) => {
     try {
-        const { email } = req.body;
+        const { email , userType } = req.body;
         const userdata = await usermodel.findOne({ email: email });
 
         if (!userdata) {
             return res.status(401).send({ message: "Enter valid registered Email Id" });
         }
-
+        if(userdata.isOwner && userType === 'customer' || (!userdata.isOwner && userType === 'owner')) {
+            return res.status(401).json({message: "Unauthorized"})
+        }
         let tokendata = await Token.findOne({ userid: userdata._id });
         if (!tokendata) {
             const rs = randomstring.generate();
