@@ -124,3 +124,10 @@ button:focus {
    color:#d84622; 
    transition:.2s ease-in-out
 }
+
+.error-message {
+    color: red;
+    font-size: 14px;
+    margin-bottom: 10px;
+    text-align: center;
+  }
