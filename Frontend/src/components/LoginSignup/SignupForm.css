@@ -61,3 +61,13 @@ body {
     color: #555;
     margin-top: 10px;
 }
+
+.error-message {
+    color: red; 
+    font-weight: bold; 
+}
+
+.success-message {
+    color: green; 
+    font-weight: bold; 
+}

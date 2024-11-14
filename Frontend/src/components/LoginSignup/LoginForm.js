@@ -7,14 +7,14 @@ const LoginForm = ({ userType }) => {
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       setErrorMessage('');
       setSuccessMessage('');
+    
       const API_URL = process.env.REACT_APP_API_URL;
-
       const response = await fetch(`${API_URL}/auth/login`, {
         method: 'POST',
         headers: {
@@ -32,8 +32,6 @@ const LoginForm = ({ userType }) => {
         setPassword('');
       } else {
         setErrorMessage(data.message || 'An error occurred during login.Check Console');
-        setEmail('');
-        setPassword('');
       }
     } catch (error) {
       // Handle any network or other errors
@@ -43,7 +41,6 @@ const LoginForm = ({ userType }) => {
 
   return (
     <div className="login-form-container">
-      {console.log("userType",userType)}
       <h2>{userType === 'customer' ? 'Customer Login' : 'Restaurant Owner Login'}</h2>
       <form className="login-form" onSubmit={handleSubmit}>
         <input

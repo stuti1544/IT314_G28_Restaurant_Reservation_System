@@ -1,3 +1,4 @@
+// src/SignupForm.js
 import React, { useState } from 'react';
 import './SignupForm.css';
 
@@ -5,13 +6,13 @@ const SignupForm = ({ userType }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (password !== confirmPassword) {
       setErrorMessage("Passwords do not match!");
       return;
@@ -48,19 +49,26 @@ const SignupForm = ({ userType }) => {
         setErrorMessage(data.message);
         setSuccessMessage('');
       }
+      setIsSubmitted(true);
     } catch (error) {
       console.error("Error during signup:", error);
       setErrorMessage("Something went wrong. Please try again.");
       setSuccessMessage('');
     }
+    
   };
 
-  return (
+  return isSubmitted ? (
+    <div className="verify-email-container">
+      <h2>Verify Your Email</h2>
+      <p>Click on the link sent to {email} to verify your account.</p>
+    </div>
+  ) : (
     <div className="signup-form-container">
       <h2>{userType === 'customer' ? 'Customer Signup' : 'Restaurant Owner Signup'}</h2>
       <form className="signup-form" onSubmit={handleSubmit}>
-        {errorMessage && <p className="error-message">{errorMessage}</p>}
-        {successMessage && <p className="success-message">{successMessage}</p>}
+      {errorMessage && <p className="error-message">{errorMessage}</p>}
+      {successMessage && <p className="success-message">{successMessage}</p>}
         <input
           type="text"
           placeholder="Name"

@@ -1,11 +1,13 @@
 // src/LoginPage.js
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import './LoginPage.css';
 import LoginForm from './LoginForm';
 import SignupForm from './SignupForm';
 import ForgotPassword from './ForgotPassword';
 import googleLogo from './images/googlelogo.png';
+
+
 
 const LoginPage = () => {
   const [isSignup, setIsSignup] = useState(false);
@@ -13,6 +15,7 @@ const LoginPage = () => {
   const [rememberMe, setRememberMe] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null); // Set initial errorMessage to null
   const [userType, setUserType] = useState('customer'); // Default to 'customer' or null if needed
+  // Get the user type from the URL
 
   const location = useLocation();
 
@@ -45,12 +48,6 @@ const LoginPage = () => {
     }
   }, [location]);
 
-  // Function to toggle signup/login and reset error message
-  const toggleSignup = () => {
-    setIsSignup(!isSignup);
-    setErrorMessage(null); // Reset error message on toggling between signup and login
-  };
-
   if (isForgotPassword) {
     return <ForgotPassword setIsForgotPassword={setIsForgotPassword} />;
   }
@@ -58,41 +55,44 @@ const LoginPage = () => {
   return (
     <div className="login-page">
       {errorMessage && (
-        <p className="error-message">{errorMessage}</p> // Display error message if exists
-      )}
-
-      <div className="login-card">
-        {isSignup ? (
-          <SignupForm userType={userType} />
-        ) : (
-          <>
-            {/* Always show login form */}
-            <LoginForm userType={userType} />
-            <div className="login-options">
-              <label>
-                <input
-                  type="checkbox"
-                  checked={rememberMe}
-                  onChange={() => setRememberMe(!rememberMe)}
-                />
-                Remember Me
-              </label>
-              <a href="#" onClick={() => setIsForgotPassword(true)}>
-                Forgot Password?
-              </a>
-            </div>
-            <button className="google-login-btn" onClick={handleGoogleLogin}>
-              <img src={googleLogo} alt="Google logo" />
-              <span>Sign in with Google</span>
+        <p className="error-message" style={{ color: 'red', fontSize: '14px', textAlign: 'center', marginBottom: '10px' }}>
+          {errorMessage}
+        </p>)}
+      {userType ? (
+        <div className="login-card">
+          {isSignup ? (
+            <SignupForm userType={userType} />
+          ) : (
+            <>
+              <LoginForm userType={userType} />
+              <div className="login-options">
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={rememberMe}
+                    onChange={() => setRememberMe(!rememberMe)}
+                  />
+                  Remember Me
+                </label>
+                <a href="#" onClick={() => setIsForgotPassword(true)}>
+                  Forgot Password?
+                </a>
+              </div>
+              <button className="google-login-btn" onClick={handleGoogleLogin}>
+                <img src={googleLogo} alt="Google logo" />
+                <span>Sign in with Google</span>
+              </button>
+            </>
+          )}
+          <p>
+            <button onClick={() => setIsSignup(!isSignup)}>
+              {isSignup ? 'Already have an account? Login' : "Don't have an account? Sign Up"}
             </button>
-          </>
-        )}
-        <p>
-          <button onClick={toggleSignup}>
-            {isSignup ? 'Already have an account? Login' : "Don't have an account? Sign Up"}
-          </button>
-        </p>
-      </div>
+          </p>
+        </div>
+      ) : (
+        <p>Please select a user type first.</p>
+      )}
     </div>
   );
 };

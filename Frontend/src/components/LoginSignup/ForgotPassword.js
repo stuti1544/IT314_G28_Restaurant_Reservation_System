@@ -1,3 +1,4 @@
+// src/ForgotPassword.js
 import React, { useState } from 'react';
 import './ForgotPassword.css';
 import PasswordResetConfirmation from './PasswordResetConfirmation';
@@ -10,7 +11,6 @@ const ForgotPassword = ({ setIsForgotPassword }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
       // Send a POST request to the forgot password endpoint
       const response = await fetch(`${process.env.REACT_APP_API_URL}/auth/forgot-password`, {
@@ -36,35 +36,34 @@ const ForgotPassword = ({ setIsForgotPassword }) => {
       setSuccessMessage(''); // Clear any previous success messages
     }
   };
-
-  return isResetSent ? (
-    <PasswordResetConfirmation setIsForgotPassword={setIsForgotPassword} />
-  ) : (
-    <div className="forgot-password-page">
-      <div className="forgot-password-card">
-        <h2>Forgot Password</h2>
-        <form onSubmit={handleSubmit}>
-          <input
-            type="email"
-            placeholder="Enter Registered Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          <button type="submit">Send Reset Link</button>
-        </form>
-        {successMessage && (
+return isResetSent ? (
+  <PasswordResetConfirmation setIsForgotPassword={setIsForgotPassword} />
+) : (
+  <div className="forgot-password-page">
+    <div className="forgot-password-card">
+      <h2>Forgot Password</h2>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="email"
+          value={email}
+          placeholder='Enter Registered Email'
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+        <button type="submit">Send Reset Link</button>
+      </form>
+      {successMessage && (
           <p className="success-message">{successMessage}</p>
         )}
         {errorMessage && (
           <p className="error-message">{errorMessage}</p>
         )}
-        <p>
-          <button onClick={() => setIsForgotPassword(false)}>Back to Login</button>
-        </p>
-      </div>
+      <p>
+        <button onClick={() => setIsForgotPassword(false)}>Back to Login</button>
+      </p>
     </div>
-  );
+  </div>
+);
 };
 
 export default ForgotPassword;
