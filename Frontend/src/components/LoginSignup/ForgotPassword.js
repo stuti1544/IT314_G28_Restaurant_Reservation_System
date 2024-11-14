@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import './ForgotPassword.css';
 import PasswordResetConfirmation from './PasswordResetConfirmation';
 
-const ForgotPassword = ({ setIsForgotPassword }) => {
+const ForgotPassword = ({ setIsForgotPassword , userType }) => {
   const [email, setEmail] = useState('');
   const [isResetSent, setIsResetSent] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -18,7 +18,7 @@ const ForgotPassword = ({ setIsForgotPassword }) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email }), // Send the email to the backend
+        body: JSON.stringify({ email, userType }), // Send the email to the backend
       });
 
       const data = await response.json();

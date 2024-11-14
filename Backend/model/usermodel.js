@@ -34,11 +34,6 @@ const userSchema = new Schema({
             message: "Password must be of minimum length 6 and must contain at least one uppercase letter, one lowercase letter, one number, and one special character"
         }
     },
-    confirmed:{
-        type:Boolean,
-        default:false
-    },
-
     isOwner:{
         type:Boolean,
         default:false

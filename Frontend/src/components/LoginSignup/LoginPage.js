@@ -49,7 +49,7 @@ const LoginPage = () => {
   }, [location]);
 
   if (isForgotPassword) {
-    return <ForgotPassword setIsForgotPassword={setIsForgotPassword} />;
+    return <ForgotPassword setIsForgotPassword={setIsForgotPassword} userType={userType} />;
   }
 
   return (
