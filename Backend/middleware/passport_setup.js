@@ -12,7 +12,7 @@ passport.deserializeUser((user,done)=>{
 })
 
 passport.use(new googglestrategy({
-    callbackURL: 'http://localhost:4000/auth/google/redirect',
+    callbackURL: 'https://forkandfeast-backend.onrender.com/auth/google/redirect',
     clientID: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET
 },
