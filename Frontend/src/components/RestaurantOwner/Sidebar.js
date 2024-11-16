@@ -11,6 +11,9 @@ const Sidebar = () => (
       <li><Link to="/stats">Stats</Link></li>
       <li><Link to="/logout">Logout</Link></li>
     </ul>
+    <div className={styles.addRestaurantButtonContainer}>
+      <Link to="/add-restaurant" className={styles.addRestaurantButton}>Add Restaurant</Link> {/* Link to the new Add Restaurant page */}
+    </div>
   </div>
 );
 

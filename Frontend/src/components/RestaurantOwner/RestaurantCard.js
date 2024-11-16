@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './RestaurantCard.module.css';
+import AddRestaurantform from './AddRestaurantform'; // Import the AddRestaurantform component
 
 const RestaurantCard = ({ name, cuisine, image, onCardClick, onButtonClick }) => {
+  const [isEditFormVisible, setIsEditFormVisible] = useState(false);
+
   const handleCardClick = (e) => {
     // Prevent the modal from being triggered by button clicks
     if (onCardClick) {
@@ -14,6 +17,13 @@ const RestaurantCard = ({ name, cuisine, image, onCardClick, onButtonClick }) =>
     if (onButtonClick) {
       onButtonClick(action); // Pass the action ('edit' or 'manage')
     }
+    if (action === 'edit') {
+      setIsEditFormVisible(true); // Show the edit form when 'Edit' button is clicked
+    }
+  };
+
+  const closeEditForm = () => {
+    setIsEditFormVisible(false); // Close the edit form
   };
 
   return (
@@ -41,6 +51,13 @@ const RestaurantCard = ({ name, cuisine, image, onCardClick, onButtonClick }) =>
           Manage
         </button>
       </div>
+
+      {/* Conditionally render the AddRestaurantform if isEditFormVisible is true */}
+      {isEditFormVisible && (
+        <div className={styles.formOverlay}>
+          <AddRestaurantform closeForm={closeEditForm} />
+        </div>
+      )}
     </div>
   );
 };
