@@ -4,7 +4,8 @@ import LandingPage from './components/LoginSignup/LandingPage';
 import LoginPage from './components/LoginSignup/LoginPage';
 import UserTypeSelection from './components/LoginSignup/UserTypeSelection';
 import Dashboard from './components/RestaurantOwner/Dashboard';
-import ResetPassword from './components/LoginSignup/ResetPassword'
+import ResetPassword from './components/LoginSignup/ResetPassword';
+import AddRestaurant from './components/RestaurantOwner/AddRestaurantform'; // Import your AddRestaurant component
 
 const App = () => {
   return (
@@ -25,12 +26,14 @@ const App = () => {
         {/* Dashboard page */}
         <Route path="/dashboard" element={<Dashboard />} />
 
-        {/* Redirect any unknown paths to the landing page */}
-        <Route path="*" element={<Navigate to="/" />} />
-
+        {/* Reset Password Route with Token */}
         <Route path="/auth/reset-password/:token" element={<ResetPassword />} />
 
+        {/* Add Restaurant page */}
+        <Route path="/add-restaurant" element={<AddRestaurant />} /> {/* Add this route */}
 
+        {/* Redirect any unknown paths to the landing page */}
+        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </Router>
   );

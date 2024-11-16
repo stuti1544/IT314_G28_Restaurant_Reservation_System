@@ -1,22 +1,20 @@
+/* Sidebar.module.css */
 .sidebar {
-  width: 250px;
- 
-  background-color: rgba(255, 255, 255, 0.2); /* Semi-transparent white background */
-  backdrop-filter: blur(10px); /* Apply the blur effect */
-  padding: 20px;
-  position: fixed;
-  height: 100vh;
+  position: fixed; /* Keep the sidebar fixed */
   top: 0;
   left: 0;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Slight shadow for depth */
-  border-radius: 10px; /* Optional: round the corners for a smoother look */
-  overflow: hidden; /* Ensure content inside the sidebar doesn't spill out */
+  width: 250px; /* Fixed width for the sidebar */
+  height: 100vh; /* Ensure sidebar takes full height of the viewport */
+  background-color: #fff;
+  padding: 20px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  z-index: 1000; /* Ensure sidebar stays on top */
 }
 
 .sidebar h2 {
-  font-size: 1.5rem;
-  margin-bottom: 20px;
+  font-family: 'Montserrat', sans-serif;
   color: #333;
+  margin-bottom: 20px;
 }
 
 .sidebar ul {
@@ -25,15 +23,35 @@
 }
 
 .sidebar ul li {
-  margin: 15px 0;
+  margin: 10px 0;
 }
 
 .sidebar ul li a {
   text-decoration: none;
   color: #333;
-  font-size: 1.2rem;
+  font-size: 1rem;
 }
 
 .sidebar ul li a:hover {
-  color: #86ba4a;
+  color: #ef5427; /* Accent color on hover */
+}
+
+.addRestaurantButtonContainer {
+  margin-top: 20px;
+}
+
+.addRestaurantButton {
+  display: inline-block;
+  padding: 12px 20px;
+  background-color: #86ba4a; /* Green button color */
+  color: white;
+  text-align: center;
+  border-radius: 5px;
+  font-size: 1rem;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.addRestaurantButton:hover {
+  background-color: #ef5427; /* Hover color for the button */
 }
