@@ -35,7 +35,7 @@ const EmailVerificationTemplate = `
 </head>
 <body>
     <div class="container">
-        <h1 style="color: #800080;">Hello Rit!</h1>
+        <h1 style="color: #800080;">Hello {Username}!</h1>
         
         <p>Thank you for joining <strong>Fork & Feast</strong>!</p>
         

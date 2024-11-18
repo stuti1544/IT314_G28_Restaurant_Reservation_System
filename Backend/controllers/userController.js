@@ -235,4 +235,4 @@ const resetPassword = async (req, res) => {
     }
 }
 
-module.exports = { signup_post, login_post, forgotPassword, resetPassword, confirmEmail };
+module.exports = { isDomainValid, signup_post, login_post, forgotPassword, resetPassword, confirmEmail, sendresetpasswordmail, sendConfirmationEmail, errorHandle };
