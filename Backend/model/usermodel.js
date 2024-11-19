@@ -9,7 +9,7 @@ const userSchema = new Schema({
         required:[true,"Enter name"],
         validate: {
             validator: function (v) {
-                return /^[A-Za-z]{2,20}$/.test(v);
+                return /^[A-Za-z\s]{2,20}$/.test(v);
             },
             message: "Name must be alphabetical and a minimum of 2 characters and a maximum of 20"
         }
@@ -37,6 +37,10 @@ const userSchema = new Schema({
     isOwner:{
         type:Boolean,
         default:false
+    },
+    emailVerified: {
+        type: Boolean,
+        default: false
     }
 })
 

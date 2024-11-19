@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import './SignupForm.css';
 
-const SignupForm = ({ userType }) => {
+const SignupForm = ({ userType, onSignupSuccess }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -10,7 +10,7 @@ const SignupForm = ({ userType }) => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
-
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
@@ -37,7 +37,7 @@ const SignupForm = ({ userType }) => {
       });
 
       const data = await response.json();
-
+      console.log("sf", data);
       if (response.ok) {
         setName('');
         setEmail('');
@@ -45,11 +45,13 @@ const SignupForm = ({ userType }) => {
         setConfirmPassword('');
         setErrorMessage('');
         setSuccessMessage(data.message);
+        setIsSubmitted(true);
+      onSignupSuccess();
       } else {
         setErrorMessage(data.message);
         setSuccessMessage('');
       }
-      setIsSubmitted(true);
+      
     } catch (error) {
       console.error("Error during signup:", error);
       setErrorMessage("Something went wrong. Please try again.");
