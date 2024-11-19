@@ -1,53 +1,196 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Sidebar from './Sidebar';
 import RestaurantCard from './RestaurantCard';
 import RestaurantModal from './RestaurantModal';
 import styles from './Dashboard.module.css';
-import gourmetGrubImg from './images/gourmetgrub.jpg';
-import spiceSymphonyImg from './images/indian.jpg';
-import sushiCentralImg from './images/sushi.jpg';
-import tacoTownImg from './images/taco.jpg';
-
+import AddRestaurantForm from './AddRestaurantform';
+import { useNavigate } from 'react-router-dom';
 const Dashboard = () => {
-  const initialRestaurants = [
-    { id: 1, name: 'Gourmet Grub', cuisine: 'Italian', image: gourmetGrubImg, location: '1234 Food St, Rome, Italy' },
-    { id: 2, name: 'Spice Symphony', cuisine: 'Indian', image: spiceSymphonyImg, location: '4567 Spice Ave, New Delhi, India' },
-    { id: 3, name: 'Sushi Central', cuisine: 'Japanese', image: sushiCentralImg, location: '8901 Sushi Rd, Tokyo, Japan' },
-    { id: 4, name: 'Taco Town', cuisine: 'Mexican', image: tacoTownImg, location: '2345 Taco Blvd, Mexico City, Mexico' },
-  ];
-
-  const [restaurants] = useState(initialRestaurants);
+  const [showAddRestaurantModal, setShowAddRestaurantModal] = useState(false);
+  const [restaurants , setRestaurants] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [filterCuisine, setFilterCuisine] = useState('');
   const [selectedRestaurant, setSelectedRestaurant] = useState(null);
   const [action, setAction] = useState(''); // To store the action (edit/manage)
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
 
+  useEffect(() => {
+    fetchRestaurants();
+  }, []);
+  const navigate = useNavigate();
+
+  const fetchRestaurants = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/restaurant/allRestaurant`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+  
+      if (!response.ok) {
+        if (response.status === 401) {
+          localStorage.removeItem('token');
+          navigate('/login?type=owner');
+        }
+        throw new Error('Failed to fetch restaurants');
+      }
+  
+      const data = await response.json();
+      const restaurantData = data.restaurantData.map(restaurant => ({
+        ...restaurant,
+        imageUrl: `${process.env.REACT_APP_API_URL}/restaurant/images/${restaurant.image}`
+      }));
+      
+      setRestaurants(restaurantData);
+      setError(null);
+    } catch (err) {
+      setError('Failed to load restaurants. Please try again later.');
+      console.error('Error fetching restaurants:', err);
+      
+
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  const handleAddOrUpdateRestaurant = async (newRestaurant, isEdit = false) => {
+    try {
+      if (isEdit) {
+        // Format the updated restaurant data
+        const formattedRestaurant = {
+          ...newRestaurant,
+          imageUrl: Array.isArray(newRestaurant.image)
+            ? `${process.env.REACT_APP_API_URL}/restaurant/images/${newRestaurant.image[0]}`
+            : `${process.env.REACT_APP_API_URL}/images/${newRestaurant.image}`,
+        };
+
+        // Update the restaurants array with the new data
+        setRestaurants(prevRestaurants =>
+          prevRestaurants.map(restaurant =>
+            restaurant._id === newRestaurant._id ? formattedRestaurant : restaurant
+          )
+        );
+      } else {
+        // Handle adding new restaurant (existing code)
+        const formattedRestaurant = {
+          ...newRestaurant,
+          imageUrl: Array.isArray(newRestaurant.image)
+            ? `${process.env.REACT_APP_API_URL}/restaurant/images/${newRestaurant.image[0]}`
+            : `${process.env.REACT_APP_API_URL}/restaurant/images/${newRestaurant.image}`,
+        };
+        setRestaurants(prev => [...prev, formattedRestaurant]);
+      }
+      
+      setShowAddRestaurantModal(false);
+      setIsEditing(false);
+      setSelectedRestaurant(null);
+    } catch (error) {
+      console.error('Error handling restaurant:', error);
+    }
+  };
+  const onSave = async (newRestaurant) => {
+    // Add the imageUrl to the new restaurant
+    // const restaurantdata = {
+    //   ...newRestaurant,
+    //   imageUrl: `http://localhost:4000/restaurant/images/${newRestaurant.image}`
+    // };
+    console.log("1", newRestaurant)
+    const formattedRestaurant = {
+      ...newRestaurant,
+      imageUrl: `${process.env.REACT_APP_API_URL}/restaurant/images/${newRestaurant.image}`,
+    };
+    // Update the local state by adding the new restaurant to the existing array
+    setRestaurants(prevRestaurants => [...prevRestaurants, formattedRestaurant]);
+    setShowAddRestaurantModal(false);
+    console.log(restaurants);
+  };
+  
+  
   // Filter restaurants based on search and cuisine
   const filteredRestaurants = restaurants.filter((restaurant) =>
     restaurant.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
-    restaurant.cuisine.toLowerCase().includes(filterCuisine.toLowerCase())
+    (filterCuisine === '' || 
+     (restaurant.cuisines && restaurant.cuisines.toLowerCase().includes(filterCuisine.toLowerCase())))
   );
+  
+  const handleAddRestaurantClose = () => {
+    setShowAddRestaurantModal(false);
+  };
 
   const handleCardClick = (restaurant) => {
     setSelectedRestaurant(restaurant);
   };
 
-  const handleButtonClick = (actionType) => {
-    setAction(actionType); // Store the action ('edit' or 'manage')
-    console.log(`${actionType} clicked`);
-    // Add your logic for edit/manage here, like opening a different view or navigating
+  const handleButtonClick = async (actionType, restaurant) => {
+    setAction(actionType);
+    if (actionType === 'edit') {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/restaurant/${restaurant._id}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch restaurant details');
+        }
+        
+        const restaurantData = await response.json();
+        const formattedData = {
+          ...restaurantData,
+          restaurantData: {
+            ...restaurantData.restaurantData,
+            image: Array.isArray(restaurantData.restaurantData.image)
+              ? restaurantData.restaurantData.image.map(img =>
+                  img.startsWith('http') ? img : `${process.env.REACT_APP_API_URL}/restaurant/images/${img}`
+                )
+              : restaurantData.restaurantData.image
+          }
+        };
+        setSelectedRestaurant(formattedData);
+        setIsEditing(true);
+        setShowAddRestaurantModal(true);
+      } catch (error) {
+        console.error('Error fetching restaurant details:', error);
+        setError('Failed to fetch restaurant details');
+      }
+    } else {
+      setSelectedRestaurant(restaurant);
+    }
   };
 
   const closeModal = () => {
     setSelectedRestaurant(null);
   };
 
+  if (loading) {
+    return (
+      <div className={styles.loadingContainer}>
+        <div className={styles.loadingSpinner}>Loading...</div>
+      </div>
+    );
+  }
   return (
     <div className={styles.dashboard}>
-      <Sidebar />
+      <Sidebar onAddRestaurant={() => {
+        setIsEditing(false);
+        setSelectedRestaurant(null);
+        setShowAddRestaurantModal(true);
+      }}/>
       <div className={styles.content}>
         <h1 className={styles.heading}>Your Restaurants</h1>
-
+        {error && (
+          <div className={styles.errorMessage}>
+            {error}
+            <button onClick={fetchRestaurants} className={styles.retryButton}>
+              Retry
+            </button>
+          </div>
+        )}
         {/* Search Bar */}
         <div className={styles.searchContainer}>
           <input
@@ -71,21 +214,35 @@ const Dashboard = () => {
           {filteredRestaurants.length > 0 ? (
             filteredRestaurants.map((restaurant) => (
               <RestaurantCard
-                key={restaurant.id}
+                key={restaurant._id}
                 name={restaurant.name}
-                cuisine={restaurant.cuisine}
-                image={restaurant.image}
+                cuisine={restaurant.cuisines}
+                image={restaurant.imageUrl}
                 onCardClick={() => handleCardClick(restaurant)}
-                onButtonClick={handleButtonClick}
+                onButtonClick={(action) => handleButtonClick(action, restaurant)}
               />
             ))
           ) : (
             <p>No restaurants found.</p>
           )}
         </div>
-
-        {/* Modal for restaurant details */}
-        <RestaurantModal restaurant={selectedRestaurant} onClose={closeModal} />
+          
+        {showAddRestaurantModal && (
+          <AddRestaurantForm
+            restaurantData={isEditing ? selectedRestaurant : null}
+            onClose={() => {
+              setShowAddRestaurantModal(false);
+              setIsEditing(false);
+              setSelectedRestaurant(null);
+            }}
+            onSave={(data) => handleAddOrUpdateRestaurant(data, isEditing)}
+          />
+        )}
+        <RestaurantModal 
+          restaurant={selectedRestaurant} 
+          onClose={() => setSelectedRestaurant(null)} 
+          action={action}
+        />
       </div>
     </div>
   );

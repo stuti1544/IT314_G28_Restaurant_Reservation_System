@@ -22,7 +22,7 @@ const App = () => {
 
         {/* User type selection page */}
         <Route path="/select-user" element={<UserTypeSelection />} />
-
+       
         {/* Dashboard page */}
         <Route path="/dashboard" element={<Dashboard />} />
 
