@@ -5,6 +5,7 @@ import LoginPage from './components/LoginSignup/LoginPage';
 import UserTypeSelection from './components/LoginSignup/UserTypeSelection';
 import Dashboard from './components/RestaurantOwner/Dashboard';
 import ResetPassword from './components/LoginSignup/ResetPassword';
+import UserDashboard from './components/UserDashboard/UserDashboard';
 import AddRestaurant from './components/RestaurantOwner/AddRestaurantform'; // Import your AddRestaurant component
 
 const App = () => {
@@ -25,6 +26,9 @@ const App = () => {
        
         {/* Dashboard page */}
         <Route path="/dashboard" element={<Dashboard />} />
+
+        {/* User Dashboard with nested routes */}
+        <Route path="/user-dashboard/*" element={<UserDashboard />} />
 
         {/* Reset Password Route with Token */}
         <Route path="/auth/reset-password/:token" element={<ResetPassword />} />

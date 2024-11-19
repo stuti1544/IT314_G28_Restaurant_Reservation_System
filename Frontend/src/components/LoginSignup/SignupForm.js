@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import styles from './SignupForm.module.css';
 
-const SignupForm = ({ userType }) => {
+const SignupForm = ({ userType, onSignupSuccess }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -37,7 +37,8 @@ const SignupForm = ({ userType }) => {
       });
 
       const data = await response.json();
-
+      console.log("sf", data);
+      
       if (response.ok) {
         setName('');
         setEmail('');
@@ -45,17 +46,18 @@ const SignupForm = ({ userType }) => {
         setConfirmPassword('');
         setErrorMessage('');
         setSuccessMessage(data.message);
+        setIsSubmitted(true);
+        onSignupSuccess();
       } else {
         setErrorMessage(data.message);
         setSuccessMessage('');
       }
-      setIsSubmitted(true);
+      
     } catch (error) {
       console.error("Error during signup:", error);
       setErrorMessage("Something went wrong. Please try again.");
       setSuccessMessage('');
     }
-    
   };
 
   return isSubmitted && successMessage ? (
@@ -69,8 +71,9 @@ const SignupForm = ({ userType }) => {
       <form className={styles['signup-form']} onSubmit={handleSubmit}>
         {errorMessage && <p className={styles['error-message']}>{errorMessage}</p>}
         {successMessage && <p className={styles['success-message']}>{successMessage}</p>}
+        
         <input
-          type="text"
+          type="name"
           placeholder="Name"
           value={name}
           onChange={(e) => setName(e.target.value)}
