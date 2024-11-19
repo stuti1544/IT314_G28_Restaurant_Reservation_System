@@ -72,7 +72,8 @@
     border: none; /* No border */
     border-radius: 25px; /* Rounded button edges */
     cursor: pointer; /* Pointer cursor on hover */
-    transition: background-color 0.3s ease; /* Smooth transition */
+    font-weight: bold;
+    transition:  0.3s ease; /* Smooth transition */
 }
 
 .button:hover {

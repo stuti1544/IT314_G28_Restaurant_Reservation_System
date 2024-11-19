@@ -18,7 +18,7 @@
     font-size: 1.2em; /* Adjust paragraph size */
 }
 
-button {
+.button {
     padding: 10px 20px; /* Button padding */
     background-color: #86ba4a; /* Button color */
     color: white; /* Text color */
@@ -29,7 +29,7 @@ button {
     
 }
 
-button:hover {
+.button:hover {
     background-color: #ef5427; /* Change color on hover */
 }
 

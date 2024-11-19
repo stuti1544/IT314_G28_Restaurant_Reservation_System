@@ -1,12 +1,12 @@
 // src/Navbar.js
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate from react-router-dom
-import './Navbar.css';
+import { useNavigate } from 'react-router-dom';
+import styles from './Navbar.module.css';
 
 const Navbar = () => {
   const [visible, setVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
 
   const handleScroll = () => {
     const currentScrollY = window.scrollY;
@@ -29,20 +29,23 @@ const Navbar = () => {
 
   // Function to handle the Get Started button click
   const handleGetStarted = () => {
-    navigate('/select-user'); // Redirect to user type selection
+    navigate('/select-user');
   };
 
   return (
-    <nav className={`navbar ${visible ? 'visible' : 'hidden'}`}>
-      <div className="navbar-brand">
+    <nav className={`${styles.navbar} ${visible ? styles.visible : styles.hidden}`}>
+      <div className={styles['navbar-brand']}>
         <h1>Fork and Feast</h1>
       </div>
-      <ul className="nav-links">
+      <ul className={styles['nav-links']}>
         <li>
-        <button onClick={handleGetStarted} className="button" style={{ color: 'white' }}>
-    Get Started
-</button>
-
+          <button 
+            onClick={handleGetStarted} 
+            className={styles.button} 
+            style={{ color: 'white' }}
+          >
+            Get Started
+          </button>
         </li>
       </ul>
     </nav>

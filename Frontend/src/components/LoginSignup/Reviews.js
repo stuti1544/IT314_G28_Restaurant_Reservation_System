@@ -1,6 +1,6 @@
 import React from 'react';
 import Slider from 'react-slick';
-import './Reviews.css';
+import styles from './Reviews.module.css';
 
 const reviews = [
   {
@@ -42,12 +42,12 @@ const Reviews = () => {
   };
 
   return (
-    <div className="reviews-section">
+    <div className={styles['reviews-section']}>
       <h2>Customer Reviews</h2>
       <Slider {...settings}>
         {reviews.map((review, index) => (
-          <div key={index} className="review-card">
-            <img src={review.image} alt={review.name} className="review-image" />
+          <div key={index} className={styles['review-card']}>
+            <img src={review.image} alt={review.name} className={styles['review-image']} />
             <p>{`"${review.review}"`}</p>
             <h4>- {review.name}</h4>
           </div>
