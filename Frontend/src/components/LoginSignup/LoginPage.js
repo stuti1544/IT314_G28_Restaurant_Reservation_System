@@ -1,7 +1,7 @@
 // src/LoginPage.js
 import React, { useState, useEffect } from 'react';
-import { useLocation, useNavigate, Link } from 'react-router-dom';
-import './LoginPage.css';
+import { useLocation, Link } from 'react-router-dom';
+import styles from './LoginPage.module.css';
 import LoginForm from './LoginForm';
 import SignupForm from './SignupForm';
 import ForgotPassword from './ForgotPassword';
@@ -13,94 +13,56 @@ const LoginPage = () => {
   const [rememberMe, setRememberMe] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   const [userType, setUserType] = useState('customer');
-  const [isVerified, setIsVerified] = useState(false);
-  
-  const location = useLocation();
-  const navigate = useNavigate();
 
+  const location = useLocation();
+
+  // Function to handle Google Sign-in
   const handleGoogleLogin = () => {
-    const usertype = userType === 'owner' ? true : false;
+    const usertype = userType == 'owner' ? true : false;
     window.open(`${process.env.REACT_APP_API_URL}/auth/google?type=${usertype}`, '_self');
   };
 
+  // Effect to handle token and error from URL, reset errorMessage on mount
   useEffect(() => {
-    setErrorMessage(null);
+    setErrorMessage(null); // Reset error message every time component renders
 
     const params = new URLSearchParams(location.search);
     const token = params.get('token');
     const error = params.get('error');
-    const userTypeParam = params.get('type');
-    const verificationToken = params.get('verified');
-
-    // Check if this is a newly registered user requiring verification
-    const isNewUser = localStorage.getItem('isNewUser') === 'true';
-
-    if (isNewUser && !verificationToken) {
-      setErrorMessage('Please verify your email first. Check your inbox for the verification link.');
-      return;
-    }
-
-    // If user has verification token, mark as verified
-    if (verificationToken) {
-      setIsVerified(true);
-      localStorage.removeItem('isNewUser'); // Clear the new user flag
-    }
+    const userTypeParam = params.get('type'); // Get userType from URL
 
     if (userTypeParam) {
-      setUserType(userTypeParam);
+      setUserType(userTypeParam); // Set userType to state if passed in the URL
     }
 
     if (token) {
       localStorage.setItem('token', token);
-      window.location.href = '/';
+      window.location.href = '/'; // Redirect to home or another page
     }
 
     if (error) {
-      setErrorMessage(error);
+      setErrorMessage(error); // Set error message from URL
     }
-  }, [location, navigate]);
-
-  // Render unauthorized message if user is new and not verified
-  if (localStorage.getItem('isNewUser') === 'true' && !isVerified) {
-    return (
-      <div className="login-page">
-        <div className="login-card">
-          <h2>Email Verification Required</h2>
-          <p>Please check your email and click the verification link to access your account.</p>
-        </div>
-      </div>
-    );
-  }
+  }, [location]);
 
   if (isForgotPassword) {
     return <ForgotPassword setIsForgotPassword={setIsForgotPassword} userType={userType} />;
   }
 
   return (
-    <div className="login-page">
+    <div className={styles['login-page']}>
       {errorMessage && (
-        <p className="error-message" style={{ color: 'red', fontSize: '14px', textAlign: 'center', marginBottom: '10px' }}>
+        <p className={styles['error-message']} style={{ color: 'red', fontSize: '14px', textAlign: 'center', marginBottom: '10px' }}>
           {errorMessage}
-        </p>
-      )}
+        </p>)}
       {userType ? (
-        <div className="login-card">
+        <div className={styles['login-card']}>
           {isSignup ? (
-            <SignupForm 
-              userType={userType} 
-              onSignupSuccess={() => {
-                localStorage.setItem('isNewUser', 'true');
-                setIsSignup(false);
-              }}
-            />
+            <SignupForm userType={userType} />
           ) : (
             <>
-              <LoginForm 
-                userType={userType} 
-                isVerified={isVerified}
-                setLoginPageError={setErrorMessage}
-              />
-              <div className="login-options">
+              <LoginForm userType={userType} />
+              <div className={styles['login-options']}>
                 <label>
                   <input
                     type="checkbox"
@@ -113,7 +75,7 @@ const LoginPage = () => {
                   Forgot Password?
                 </a>
               </div>
-              <button className="google-login-btn" onClick={handleGoogleLogin}>
+              <button className={styles['google-login-btn']} onClick={handleGoogleLogin}>
                 <img src={googleLogo} alt="Google logo" />
                 <span>Sign in with Google</span>
               </button>

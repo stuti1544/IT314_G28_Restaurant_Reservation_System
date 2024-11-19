@@ -1,8 +1,8 @@
 // src/SignupForm.js
 import React, { useState } from 'react';
-import './SignupForm.css';
+import styles from './SignupForm.module.css';
 
-const SignupForm = ({ userType, onSignupSuccess }) => {
+const SignupForm = ({ userType }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -10,7 +10,7 @@ const SignupForm = ({ userType, onSignupSuccess }) => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
@@ -37,7 +37,7 @@ const SignupForm = ({ userType, onSignupSuccess }) => {
       });
 
       const data = await response.json();
-      console.log("sf", data);
+
       if (response.ok) {
         setName('');
         setEmail('');
@@ -45,13 +45,11 @@ const SignupForm = ({ userType, onSignupSuccess }) => {
         setConfirmPassword('');
         setErrorMessage('');
         setSuccessMessage(data.message);
-        setIsSubmitted(true);
-      onSignupSuccess();
       } else {
         setErrorMessage(data.message);
         setSuccessMessage('');
       }
-      
+      setIsSubmitted(true);
     } catch (error) {
       console.error("Error during signup:", error);
       setErrorMessage("Something went wrong. Please try again.");
@@ -61,16 +59,16 @@ const SignupForm = ({ userType, onSignupSuccess }) => {
   };
 
   return isSubmitted && successMessage ? (
-    <div className="verify-email-container">
+    <div className={styles['verify-email-container']}>
       <h2>Verify Your Email</h2>
       <p>Click on the link sent to {email} to verify your account.</p>
     </div>
   ) : (
-    <div className="signup-form-container">
+    <div className={styles['signup-form-container']}>
       <h2>{userType === 'customer' ? 'Customer Signup' : 'Restaurant Owner Signup'}</h2>
-      <form className="signup-form" onSubmit={handleSubmit}>
-      {errorMessage && <p className="error-message">{errorMessage}</p>}
-      {successMessage && <p className="success-message">{successMessage}</p>}
+      <form className={styles['signup-form']} onSubmit={handleSubmit}>
+        {errorMessage && <p className={styles['error-message']}>{errorMessage}</p>}
+        {successMessage && <p className={styles['success-message']}>{successMessage}</p>}
         <input
           type="text"
           placeholder="Name"

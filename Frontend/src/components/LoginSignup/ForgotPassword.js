@@ -1,6 +1,6 @@
 // src/ForgotPassword.js
 import React, { useState } from 'react';
-import './ForgotPassword.css';
+import styles from './ForgotPassword.module.css';
 import PasswordResetConfirmation from './PasswordResetConfirmation';
 
 const ForgotPassword = ({ setIsForgotPassword , userType }) => {
@@ -39,8 +39,8 @@ const ForgotPassword = ({ setIsForgotPassword , userType }) => {
 return isResetSent ? (
   <PasswordResetConfirmation setIsForgotPassword={setIsForgotPassword} />
 ) : (
-  <div className="forgot-password-page">
-    <div className="forgot-password-card">
+  <div className={styles['forgot-password-page']}>
+    <div className={styles['forgot-password-card']}>
       <h2>Forgot Password</h2>
       <form onSubmit={handleSubmit}>
         <input
@@ -53,10 +53,10 @@ return isResetSent ? (
         <button type="submit">Send Reset Link</button>
       </form>
       {successMessage && (
-          <p className="success-message">{successMessage}</p>
+          <p className={styles['success-message']}>{successMessage}</p>
         )}
         {errorMessage && (
-          <p className="error-message">{errorMessage}</p>
+          <p className={styles['error-message']}>{errorMessage}</p>
         )}
       <p>
         <button onClick={() => setIsForgotPassword(false)}>Back to Login</button>

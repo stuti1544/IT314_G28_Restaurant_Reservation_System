@@ -1,0 +1,81 @@
+/* src/Navbar.css */
+/* src/fonts.css (or in your main CSS file) */
+/* Importing the local font */
+
+/* Navbar styles */
+/* Navbar styles */
+.navbar {
+    display: flex; /* Flex display for alignment */
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Montserrat', sans-serif; /* Use the Rochester font */
+    padding: 10px 20px; /* Padding for the navbar */
+    background-color: #D9CBAE; /* Background color */
+    border-radius: 0; /* Remove rounded edges for full width */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+    position: fixed; /* Fixed positioning */
+    top: 20px; /* Slightly away from the top */
+    left: 0; /* Align to the left */
+    right: 0; /* Align to the right */
+    width: 100%; /* Full width */
+    transition: transform 0.3s ease; /* Smooth transition for hiding */
+    z-index: 1000; /* Ensure navbar is above other elements */
+    margin: 0; /* Remove any margin */
+    box-sizing: border-box; /* Include padding and border in the element's total width */
+}
+
+/* Add this to control visibility during scroll */
+.visible {
+    transform: translateY(0); /* Show navbar */
+}
+
+.hidden {
+    transform: translateY(-100%); /* Hide navbar */
+}
+
+
+
+
+.navbar.hidden {
+    transform: translateY(-100%); /* Hide the navbar */
+}
+
+.navbar.visible {
+    transform: translateY(0); /* Show the navbar */
+}
+
+.navbar-brand h1 {
+    margin: 0;
+    font-size: 24px; /* Adjust font size */
+    color: #fff; /* Text color */
+}
+
+.nav-links {
+    list-style: none; /* Remove bullet points */
+    display: flex; /* Flexbox for horizontal layout */
+    gap: 15px; /* Space between items */
+}
+
+.nav-links li {
+    margin: 0; /* Reset margin */
+}
+
+.nav-links a {
+    text-decoration: none; /* Remove underline */
+    color: #fff; /* Text color */
+    font-weight: bold; /* Bold text */
+}
+
+.button {
+    padding: 10px 20px; /* Button padding */
+    background-color: #ef5427; /* Button color */
+    border: none; /* No border */
+    border-radius: 25px; /* Rounded button edges */
+    cursor: pointer; /* Pointer cursor on hover */
+    font-weight: bold;
+    transition:  0.3s ease; /* Smooth transition */
+}
+
+.button:hover {
+    background-color: #d44f22; /* Darker shade on hover */
+}

@@ -69,6 +69,7 @@
     cursor: pointer; /* Pointer cursor on hover */
     margin: 10px 0; /* Increased spacing between buttons */
     transition: background-color 0.3s; /* Smooth background color transition */
+    font-weight: bold;
 }
 
 .userSelection button:hover {
