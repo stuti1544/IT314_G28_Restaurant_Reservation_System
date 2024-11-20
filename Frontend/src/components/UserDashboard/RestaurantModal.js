@@ -37,7 +37,7 @@ const RestaurantModal = ({ restaurant, onClose }) => {
             <strong>Rating:</strong> {restaurant.rating} ⭐
           </p>
           <p className={styles.specialDishes}>
-            <strong>Special Dishes:</strong> {restaurant.specialDishes.join(", ")}
+            <strong>Special Dishes:</strong> {restaurant.specialDishes}
           </p>
           <p className={styles.location}>
             <strong>Location:</strong> {restaurant.location}
