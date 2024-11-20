@@ -11,9 +11,9 @@ const RestaurantModal = ({ restaurant, onClose }) => {
           &times;
         </button>
         <div className={styles.modalContent}>
-          <img src={restaurant.image} alt={restaurant.name} className={styles.modalImage} />
+          <img src={restaurant.imageUrl} alt={restaurant.name} className={styles.modalImage} />
           <h2>{restaurant.name}</h2>
-          <p><strong>Cuisine:</strong> {restaurant.cuisine}</p>
+          <p><strong>Cuisine:</strong> {restaurant.cuisines}</p>
           {/* Conditionally render the location */}
           {restaurant.location && (
             <p><strong>Location:</strong> {restaurant.location}</p>

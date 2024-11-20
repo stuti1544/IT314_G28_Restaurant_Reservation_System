@@ -29,6 +29,7 @@ const signup_post = async (req, res) => {
     try {
         const { name, email, password, confirmPassword, isOwner } = req.body;
         const user = await usermodel.findOne({ email: email });
+    
         if (user) {
             return res.status(409).json({ message: "User already exists" })
         }
@@ -77,7 +78,7 @@ const sendConfirmationEmail = async (name, email, token) => {
                 pass: process.env.password
             }
         });
-
+        console.log(process.env.BACKEND_URL);
         const mailOptions = {
             from: process.env.email,
             to: email,
@@ -96,13 +97,19 @@ const confirmEmail = async (req, res) => {
     try {
         const token = req.params.token;
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        const user = await usermodel.findOne({ _id: decoded._id });
+        const sessionToken = randomstring.generate(32);
+        const user = await usermodel.findByIdAndUpdate(
+            decoded._id,
+            { emailVerified: true , sessionToken: sessionToken },
+            { new: true, runValidators: false }
+        );
+
         if (!user) {
             return res.status(400).json({ message: "Invalid token or user does not exist" });
         }
-
         const userType = user.isOwner === true ? 'owner' : 'customer';
-        res.redirect(`${process.env.FRONTEND_URL}/login?type=${userType}`);
+        
+        res.redirect(`${process.env.FRONTEND_URL}/login?type=${userType}&verified=true`);
     } catch (error) {
         console.log(error.message);
         res.status(400).json({ message: "Email confirmation failed" });
@@ -117,8 +124,14 @@ const login_post = async (req, res) => {
         if (!data) {
             return res.status(401).json({ message: "Enter Valid Email" });
         }
+
         if (data.isOwner != isOwner) {
             return res.status(401).json({ message: "Invalid User" });
+        }
+        if (!data.emailVerified) {
+            return res.status(403).json({ 
+                message: "Please verify your email before logging in. Check your inbox for the confirmation link." 
+            });
         }
         const isMatch = await bcrypt.compare(password, data.password);
         if (!isMatch) {
@@ -127,7 +140,6 @@ const login_post = async (req, res) => {
         const token = jwt.sign({ _id: data._id }, process.env.JWT_SECRET, {
             expiresIn: "24h"
         })
-        //res.setHeader('Authorization', `Bearer ${token}`);
         res.setHeader('Authorization', 'Bearer ' + token);
         res.status(200).json({ message: "User logged in successfully", userId: data._id, token: token })
     } catch (error) {
@@ -207,9 +219,7 @@ const forgotPassword = async (req, res) => {
 
 const resetPassword = async (req, res) => {
     try {
-        // console.log(req.params)
         const token = req.params.token;
-        // console.log(`from backend ${token}`)
         const tokendata = await Token.findOne({ token: token });
         if (tokendata) {
             const password = req.body.password;
@@ -235,4 +245,4 @@ const resetPassword = async (req, res) => {
     }
 }
 
-module.exports = { signup_post, login_post, forgotPassword, resetPassword, confirmEmail };
+module.exports = { isDomainValid, signup_post, login_post, forgotPassword, resetPassword, confirmEmail, sendresetpasswordmail, sendConfirmationEmail, errorHandle };

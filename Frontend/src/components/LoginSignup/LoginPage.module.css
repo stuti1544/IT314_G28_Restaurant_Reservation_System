@@ -33,20 +33,21 @@ h1, h2, h3 {
 }
 
 /* Main button styling */
+
 button {
-    background-color: rgba(255, 217, 79, 0.9); /* Light yellow with subtle opacity */
     color: #333; /* Dark text for better readability */
     border: none;
     border-radius: 25px; /* More rounded corners for a modern feel */
     padding: 12px 24px; /* Larger padding for better touch targets */
     font-size: 1rem;
-    font-weight: bold; /* Bolder text for emphasis */
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease; /* Subtle transform on hover */
 }
 
+.button{
+    font-weight: bold;
+}
 button:hover {
-    background-color: rgba(255, 217, 79, 1); /* Full opacity on hover */
     transform: scale(1.05); /* Gentle scaling on hover */
 }
 
@@ -69,6 +70,7 @@ button:focus {
     transition: background-color 0.3s ease, transform 0.2s ease;
     margin-top: 15px; /* Increased margin for better spacing */
     width: calc(100% - 20px); /* Full width minus padding for responsiveness */
+    font-weight: bold;
 }
 
 .google-login-btn:hover {
@@ -116,12 +118,12 @@ button:focus {
 .login-card p button {
     background: none;
     border: none;
-    color: #ef5427;
+    color: #000000;
     font-weight: bold; /* Bolder text for emphasis */
 }
 
 .login-card p button:hover {
-   color:#d84622; 
+   color:#000000; 
    transition:.2s ease-in-out
 }
 

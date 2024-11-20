@@ -1,0 +1,16 @@
+.container {
+    padding: 20px;
+  }
+  
+  .heading {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .cardsContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  

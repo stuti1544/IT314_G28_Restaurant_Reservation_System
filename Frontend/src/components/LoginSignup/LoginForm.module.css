@@ -55,11 +55,12 @@
     padding: 12px; /* Padding for the button */
     cursor: pointer; /* Pointer cursor on hover */
     font-size: 1rem; /* Consistent font size for readability */
+    font-weight: bold;
 }
 
 /* Button hover effect */
 .login-form button:hover {
-    background-color: #ef5427; /* Change color on hover */
+    background-color: #56960d; /* Change color on hover */
 }
 
 /* Paragraph styling within the form */

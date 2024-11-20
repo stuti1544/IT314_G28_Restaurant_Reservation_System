@@ -1,7 +1,7 @@
 // src/LandingPage.js
 import React from 'react';
 import Navbar from './Navbar';
-import './LandingPage.css';
+import styles from './LandingPage.module.css';
 import Footer from './Footer';
 import pizza from './images/pizza.png';
 import tacos from './images/tacos.png';
@@ -45,23 +45,26 @@ const sections = [
         <li>Loyalty Rewards and Offers</li>
       </ul>
     ),
-    img:pasta,
+    img: pasta,
     imgLeft: true,
   },
 ];
 
 const LandingPage = () => {
   return (
-    <div className="landing-page">
+    <div className={styles['landing-page']}>
       <Navbar />
-      <div className="content">
+      <div className={styles.content}>
         {sections.map((section, index) => (
-          <div key={index} className={`section ${section.imgLeft ? 'img-left' : 'img-right'}`}>
-            <div className="text-card">
+          <div 
+            key={index} 
+            className={`${styles.section} ${section.imgLeft ? styles['img-left'] : styles['img-right']}`}
+          >
+            <div className={styles['text-card']}>
               <h2>{section.title}</h2>
               <p>{section.text}</p>
             </div>
-            <div className="image-container">
+            <div className={styles['image-container']}>
               <img src={section.img} alt={section.title} />
             </div>
           </div>

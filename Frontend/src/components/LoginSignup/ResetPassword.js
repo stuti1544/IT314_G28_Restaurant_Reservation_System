@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './ResetPassword.css'; // Import the CSS file for styles
+import styles from './ResetPassword.module.css'; // Updated import
 import { useParams } from 'react-router-dom';
 
 const ResetPassword = () => {
@@ -40,20 +40,11 @@ const ResetPassword = () => {
     };
 
     return (
-        <div className="reset-password-page">
-            <div className="reset-password-card">
+        <div className={styles['reset-password-page']}>
+            <div className={styles['reset-password-card']}>
                 <h2>Reset Password</h2>
                 <form onSubmit={handleSubmit}>
-                    {/* <div className="input-field">
-                        <input
-                            type="email"
-                            placeholder="Enter your email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                        />
-                    </div> */}
-                    <div className="input-field">
+                    <div className={styles['input-field']}>
                         <input
                             type="password"
                             placeholder="New Password"
@@ -69,9 +60,9 @@ const ResetPassword = () => {
                             required
                         />
                     </div>
-                    {successMessage && <p className="success-message">{successMessage}</p>}
-                    {errorMessage && <div className="error-message">{errorMessage}</div>}
-                    <button type="submit" className="reset-button">Reset Password</button>
+                    {successMessage && <p className={styles['success-message']}>{successMessage}</p>}
+                    {errorMessage && <div className={styles['error-message']}>{errorMessage}</div>}
+                    <button type="submit" className={styles['reset-button']}>Reset Password</button>
                 </form>
             </div>
         </div>

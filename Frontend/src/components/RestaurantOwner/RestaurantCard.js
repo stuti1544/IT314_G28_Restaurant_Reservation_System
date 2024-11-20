@@ -6,19 +6,16 @@ const RestaurantCard = ({ name, cuisine, image, onCardClick, onButtonClick }) =>
   const [isEditFormVisible, setIsEditFormVisible] = useState(false);
 
   const handleCardClick = (e) => {
-    // Prevent the modal from being triggered by button clicks
+    
     if (onCardClick) {
       onCardClick(e);
     }
   };
 
   const handleButtonClick = (e, action) => {
-    e.stopPropagation(); // Prevent the event from bubbling to the card click handler
+    e.stopPropagation(); 
     if (onButtonClick) {
       onButtonClick(action); // Pass the action ('edit' or 'manage')
-    }
-    if (action === 'edit') {
-      setIsEditFormVisible(true); // Show the edit form when 'Edit' button is clicked
     }
   };
 
@@ -30,7 +27,7 @@ const RestaurantCard = ({ name, cuisine, image, onCardClick, onButtonClick }) =>
     <div className={styles.card} onClick={handleCardClick}>
       <div className={styles.imageContainer}>
         <img
-          src={image || 'default-image.jpg'} // Fallback to a default image if no image is provided
+          src={image || 'default-image.jpg'} 
           alt={name}
           className={styles.image}
         />

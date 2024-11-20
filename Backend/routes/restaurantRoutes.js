@@ -64,8 +64,6 @@ router.put(
 );
 
 router.get('/allRestaurant', validatetoken, restaurantController.allRestaurant);
-router.delete('/delete/:id', validatetoken, restaurantController.deleteRestaurant);
-router.get('/searchRestaurant', validatetoken, restaurantController.searchRestaurant);
 router.get('/:id',validatetoken,restaurantController.GetRestaurantById)
 
 router.get('/images/:filename', async (req, res) => {

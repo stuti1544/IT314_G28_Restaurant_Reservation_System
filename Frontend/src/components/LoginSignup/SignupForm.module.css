@@ -1,6 +1,6 @@
 /* src/SignupForm.css */
 
-body {
+.body {
     font-family: 'Arial', sans-serif;
 }
 
@@ -50,6 +50,7 @@ body {
     font-size: 1em;
     cursor: pointer;
     margin-top: 10px;
+    font-weight: bold;
 }
 
 .signup-form button:hover {
