@@ -18,7 +18,7 @@ body {
 }
 
 .hero {
-    background-image: url(./bg3.jpg); /* Replace with your image path */
+    background-image: url(./images/bg3.jpg); /* Replace with your image path */
     min-height: 300px;
     background-size: cover;
     display: flex;
