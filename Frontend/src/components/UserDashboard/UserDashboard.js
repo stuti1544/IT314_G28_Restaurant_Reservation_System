@@ -36,7 +36,6 @@ const UserDashboard = () => {
           <Route path="cuisine/:type" element={<CuisinePage />} />
           <Route path="profile" element={<MyProfile />} />
           <Route path="bookings" element={<Bookings />} />
-          <Route path="favourites" element={<Favourites />} />
           <Route path="become-a-member" element={<BecomeMember />} />
           <Route path="about-us" element={<AboutUs />} />
           <Route path="book-table/:restaurantId" element={<BookTable />} />
