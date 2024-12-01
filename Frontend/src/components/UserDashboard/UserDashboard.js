@@ -7,7 +7,6 @@ import RestaurantList from "./RestaurantList";
 import CuisinePage from "./CuisinePage";
 import MyProfile from "./MyProfile";
 import Bookings from "./Bookings";
-import Favourites from "./Favourites";
 import BecomeMember from "./BecomeMember";
 import AboutUs from "./AboutUs";
 import BookTable from "./BookTable";
