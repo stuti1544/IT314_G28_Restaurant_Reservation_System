@@ -48,7 +48,7 @@ const AboutUs = () => {
     },
     {
       name: "Rit Tambodia",
-      role: "Full-Stack Contributor",
+      role: "",
       image: require("./profileLogo.png")
     },
     {
