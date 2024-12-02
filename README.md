@@ -65,18 +65,29 @@ npm install
 # To run Frontend
 npm start
 ```
+## 🚀 Future Goals
+While the restaurant reservation system has made significant strides, several critical functionalities are yet to be realized:
+
+1. **Payment Gateway**: Implement a seamless advance payment system to secure bookings and enhance reliability.
+
+2. **Subscription Model**: Develop premium features and membership benefits to create recurring revenue and improve user engagement.
+
+3. **Offers and Discounts**: Create a mechanism to provide incentives for user sign-ups and attract restaurant partnerships.
+
+Addressing these unimplemented requirements would significantly elevate the platform's utility and competitive edge.
 
 ## 👥 Contributors
 | GitHub ID | Name |
 |-----------|------|
 | [Maulik](https://github.com/maulikk04) | Maulik Kansara - 202201442|
 | [Vraj](https://github.com/Gandhi008)| Vraj Gandhi - 202201425|  
-|  [Rit](https://github.com/rit2903) | Rit Trambadia  - 202201424 |
-|   [Rakshit](https://github.com/Rakshit-Pandhi)  |   Rakshit Pandhi  - 202201426 |
-|  [Dev](https://github.com/Dev-yas)       |   Dev Vyas - 202201453 |
-|  [Stuti](https://github.com/stuti1544)         |   Stuti Pandya  - 202201439|
-|  [Mausam](https://github.com/Mausamk123)         |  Mausam Kamdar - 202201372  |
-|  [Nisarg](https://github.com/Nisarg2004-AFK)         |   Nisarg Parmar - 202201443  |
-|  [Ridham](https://github.com/202201430)         |   Ridham Patel - 202201430  |
-|    [Harshil](https://github.com/Harshil717)       |    Harshil Parmar - 202201371 |
+| [Rit](https://github.com/rit2903) | Rit Trambadia  - 202201424 |
+| [Rakshit](https://github.com/Rakshit-Pandhi)  |   Rakshit Pandhi  - 202201426 |
+| [Dev](https://github.com/Dev-yas)       |   Dev Vyas - 202201453 |
+| [Stuti](https://github.com/stuti1544)         |   Stuti Pandya  - 202201439|
+| [Mausam](https://github.com/Mausamk123)         |  Mausam Kamdar - 202201372  |
+| [Nisarg](https://github.com/Nisarg2004-AFK)         |   Nisarg Parmar - 202201443  |
+| [Ridham](https://github.com/202201430)         |   Ridham Patel - 202201430  |
+| [Harshil](https://github.com/Harshil717)       |    Harshil Parmar - 202201371 |
+
 
