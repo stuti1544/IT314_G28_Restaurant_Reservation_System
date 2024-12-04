@@ -4,7 +4,7 @@ import styles from "./PopularCuisines.module.css";
 
 const PopularCuisine = () => {
   const navigate = useNavigate();
-  const cuisines = ['Mexican', 'Indian', 'Italian', 'Japanese', 'Chinese', 'Fast-Food', 'Continental', 'Thai'];
+  const cuisines = ['Mexican', 'Indian', 'Italian', 'Japanese', 'Chinese', 'Fast Food', 'Continental', 'Thai'];
 
   const handleCuisineClick = (cuisine) => {
     navigate(`/user-dashboard/cuisine/${cuisine}`);
