@@ -179,6 +179,11 @@ const BookTable = () => {
         })
       });
 
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to check availability');
+      }
+
       const data = await response.json();
       console.log('Raw availability data:', data);
 
@@ -218,7 +223,7 @@ const BookTable = () => {
       setShowAvailabilityModal(true);
     } catch (error) {
       console.error('Error checking availability:', error);
-      alert(`Failed to check availability: ${error.message}`);
+      alert(error.message);
     }
   };
 
