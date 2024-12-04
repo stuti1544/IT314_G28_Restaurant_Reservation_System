@@ -6,11 +6,11 @@ import LoginForm from './LoginForm';
 import SignupForm from './SignupForm';
 import ForgotPassword from './ForgotPassword';
 import googleLogo from './images/googlelogo.png';
+const {jwtDecode} = require('jwt-decode');
 
 const LoginPage = () => {
   const [isSignup, setIsSignup] = useState(false);
   const [isForgotPassword, setIsForgotPassword] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   const [userType, setUserType] = useState('customer');
   const [isVerified, setIsVerified] = useState(false);
@@ -54,7 +54,11 @@ const LoginPage = () => {
 
     if (token) {
       localStorage.setItem('token', token);
-      window.location.href = '/'; // Redirect to home or another page
+      const decodedToken = jwtDecode(token);
+      if(decodedToken.isOwner)
+        window.location.href = '/dashboard';
+
+      window.location.href = '/user-dashboard'; // Redirect to home or another page
     }
 
     if (error) {
@@ -102,14 +106,6 @@ const LoginPage = () => {
                 setLoginPageError={setErrorMessage}
               />
               <div className={styles['login-options']}>
-                <label>
-                  <input
-                    type="checkbox"
-                    checked={rememberMe}
-                    onChange={() => setRememberMe(!rememberMe)}
-                  />
-                  Remember Me
-                </label>
                 <a href="#" onClick={() => setIsForgotPassword(true)}>
                   Forgot Password?
                 </a>
