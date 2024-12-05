@@ -110,6 +110,20 @@ function AddRestaurantform({ restaurantData, onSave, onClose }) {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    const maxLengths = {
+      name: 50,
+      location: 100,
+      cuisines: 200,
+      specialDishes: 200,
+      features: 200,
+      phoneNumber: 10 // already handled in the existing code
+    };
+
+    // Check if the input has a max length and if the value exceeds it
+    if (maxLengths[name] && value.length > maxLengths[name]) {
+      return; // Don't update if exceeding max length
+    }
+
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
@@ -298,8 +312,10 @@ function AddRestaurantform({ restaurantData, onSave, onClose }) {
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
+                maxLength={50}
                 required
               />
+              <small>{formData.name.length}/50 characters</small>
             </div>
             <div>
               <label>Phone Number:</label>
@@ -320,8 +336,10 @@ function AddRestaurantform({ restaurantData, onSave, onClose }) {
                 name="location"
                 value={formData.location}
                 onChange={handleChange}
+                maxLength={100}
                 required
               />
+              <small>{formData.location.length}/100 characters</small>
             </div>
             <div>
               <label>Ambience (Upload Images):</label>
@@ -449,11 +467,13 @@ function AddRestaurantform({ restaurantData, onSave, onClose }) {
               <label>Cuisines:</label>
               <input
                 type="text"
+                name="cuisines"
                 value={formData.cuisines}
                 onChange={handleChange}
-                name="cuisines"
+                maxLength={200}
                 placeholder="Enter comma separated Cuisines"
               />
+              <small>{formData.cuisines.length}/200 characters</small>
             </div>
 
             <div>
@@ -482,7 +502,9 @@ function AddRestaurantform({ restaurantData, onSave, onClose }) {
                 value={formData.specialDishes}
                 placeholder="Enter comma separated Special Dishes"
                 onChange={handleChange}
+                maxLength={200}
               />
+              <small>{formData.specialDishes.length}/200 characters</small>
             </div>
             <div>
               <label>Features:</label>
@@ -492,7 +514,9 @@ function AddRestaurantform({ restaurantData, onSave, onClose }) {
                 value={formData.features}
                 placeholder="Enter comma separated Features"
                 onChange={handleChange}
+                maxLength={200}
               />
+              <small>{formData.features.length}/200 characters</small>
             </div>
 
             
