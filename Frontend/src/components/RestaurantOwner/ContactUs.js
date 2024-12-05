@@ -47,7 +47,7 @@ const AboutUs = () => {
       image: require("./profileLogo.png")
     },
     {
-      name: "Rit Tambodia",
+      name: "Rit Trambadia",
       role: "",
       image: require("./profileLogo.png")
     },
