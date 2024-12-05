@@ -4,12 +4,11 @@ import fetchRestaurants from "./restaurantData";
 import styles from "./BookTable.module.css";
 
 const BookTable = () => {
-  const { restaurantId } = useParams();
+  const { restaurantId, reservationId } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
   const [restaurant, setRestaurant] = useState(null);
-  const isEditing = location.state?.isEditing || false;
-  const reservationId = location.state?.reservationData?._id;
+  const isEditing = Boolean(reservationId) || location.state?.isEditing;
 
   // State declarations - remove duplicates
   const [bookingDetails, setBookingDetails] = useState({
@@ -149,8 +148,12 @@ const BookTable = () => {
 
   // Handle Time Input Change
   const handleTimeChange = (e) => {
-    setSelectedTime(e.target.value);
-    setAvailableTables(null);
+    const newTime = e.target.value;
+    setSelectedTime(newTime);
+    setBookingDetails((prev) => ({
+      ...prev,
+      time: newTime,
+    }));
   };
 
   const isRestaurantOpen = (dateTime) => {
@@ -241,13 +244,12 @@ const BookTable = () => {
 
   // Handle Date Change
   const handleDateChange = (e) => {
+    const newDate = e.target.value;
     setBookingDetails((prev) => ({
       ...prev,
-      date: e.target.value,
+      date: newDate,
     }));
     setShowDateModal(false);
-    setAvailableTables(null);
-    setSelectedTime("");
   };
 
   // Handle Table size changes
@@ -297,11 +299,28 @@ const BookTable = () => {
         return;
       }
 
+      if (!bookingDetails.date || !bookingDetails.time) {
+        alert('Please select both date and time for your reservation');
+        return;
+      }
+
       const endpoint = isEditing 
         ? `${process.env.REACT_APP_API_URL}/reservation/updateReservation/${reservationId}`
         : `${process.env.REACT_APP_API_URL}/reservation/createReservation`;
 
       const method = isEditing ? 'PUT' : 'POST';
+      
+      console.log('Sending request to:', endpoint);
+      console.log('Request data:', {
+        restaurantId,
+        date: bookingDetails.date,
+        time: bookingDetails.time,
+        tables: {
+          twoPerson: bookingDetails.tables[2],
+          fourPerson: bookingDetails.tables[4],
+          sixPerson: bookingDetails.tables[6]
+        }
+      });
 
       const response = await fetch(endpoint, {
         method: method,
@@ -322,6 +341,7 @@ const BookTable = () => {
       });
 
       const data = await response.json();
+      console.log('Response:', data);
 
       if (response.status === 401) {
         localStorage.removeItem('token');
