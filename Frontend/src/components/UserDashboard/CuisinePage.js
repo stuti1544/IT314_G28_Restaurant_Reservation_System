@@ -5,26 +5,34 @@ import RestaurantModal from "./RestaurantModal";
 import fetchRestaurants from "./restaurantData";
 import styles from "./CuisinePage.module.css";
 
-const CuisinePage = () => {
+const CuisinePage = ({ filteredLocation }) => {
   const { type } = useParams();
   const [selectedRestaurant, setSelectedRestaurant] = useState(null);
   const [filteredRestaurants, setFilteredRestaurants] = useState([]);
 
   useEffect(() => {
     const getRestaurants = async () => {
-      const restaurants = await fetchRestaurants();
-      const filtered = restaurants.filter((restaurant) => {
-        const cuisineList = restaurant.cuisines.split(',').map(c => c.trim().toLowerCase());
-        return cuisineList.includes(type.toLowerCase());
-      });
-      setFilteredRestaurants(filtered);
+      try {
+        const restaurants = await fetchRestaurants();
+
+        const filtered = restaurants.filter((restaurant) => {
+          const cuisineList = restaurant.cuisines.split(',').map(c => c.trim().toLowerCase());
+          const isCuisineMatch = cuisineList.includes(type.toLowerCase());
+          const isLocationMatch = !filteredLocation || restaurant.location === filteredLocation;
+          return isCuisineMatch && isLocationMatch;
+        });
+
+        setFilteredRestaurants(filtered);
+      } catch (error) {
+        console.error("Error fetching restaurants:", error);
+      }
     };
 
     getRestaurants();
-  }, [type]);
+  }, [type, filteredLocation]); 
 
   if (filteredRestaurants.length === 0) {
-    return <p>No restaurants found for "{type}" cuisine.</p>;
+    return <p>No restaurants found for "{type}" cuisine in this location.</p>;
   }
 
   return (

@@ -399,7 +399,8 @@ const updateReservation = async (req, res) => {
             console.error('WebSocket notification error:', wsError);
             // Continue with the response even if WebSocket fails
         }
-
+        const userData = await User.findOne({ _id: userId });
+        await sendBookingEmail(userData.email, updatedReservation.restaurantId.name, updatedReservation.date, updatedReservation.date, updatedReservation.tables, updatedReservation.entryCode, BookingUpdateTemplate);
         res.status(200).json({ 
             message: "Reservation updated successfully",
             reservation: updatedReservation 

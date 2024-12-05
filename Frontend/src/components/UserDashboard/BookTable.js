@@ -179,6 +179,11 @@ const BookTable = () => {
         })
       });
 
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to check availability');
+      }
+
       const data = await response.json();
       console.log('Raw availability data:', data);
 
@@ -218,7 +223,7 @@ const BookTable = () => {
       setShowAvailabilityModal(true);
     } catch (error) {
       console.error('Error checking availability:', error);
-      alert(`Failed to check availability: ${error.message}`);
+      alert(error.message);
     }
   };
 
@@ -336,6 +341,17 @@ const BookTable = () => {
     }
   };
 
+  // Calculate min and max dates for the date picker
+  const getDateLimits = () => {
+    const today = new Date();
+    const maxDate = new Date();
+    maxDate.setDate(today.getDate() + 7);
+
+    return {
+      min: today.toISOString().split('T')[0],
+      max: maxDate.toISOString().split('T')[0]
+    };
+  };
 
   if (!restaurant) {
     return <p className={styles.errorMessage}>Restaurant not found.</p>;
@@ -550,7 +566,8 @@ const BookTable = () => {
               value={bookingDetails.date}
               onChange={handleDateChange}
               className={styles.dateInput}
-              min={new Date().toISOString().split('T')[0]}
+              min={getDateLimits().min}
+              max={getDateLimits().max}
             />
             <button onClick={() => setShowDateModal(false)} className={styles.closeButton}>
               Close

@@ -68,7 +68,12 @@ const Navbar1 = ({ filterByLocation }) => {
   };
 
   const handleSuggestionClick = (item) => {
-    handleSearchSubmit(item.name);
+    navigate("/user-dashboard/search-results", { 
+        state: { 
+            searchQuery: item.name, // Use the restaurant name as the search query
+            suggestions: [item] // Pass the specific restaurant as a suggestion
+        } 
+    });
   };
 
   const handleKeyPress = (e) => {
