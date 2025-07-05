@@ -156,14 +156,6 @@ const Reservation = () => {
                                         <span className={`status ${booking.status.toLowerCase()}`}>
                                             {booking.status}
                                         </span>
-                                        {!booking.terminated && (
-                                            <button
-                                                className="terminate-btn"
-                                                onClick={() => handleTerminate(booking.code)}
-                                            >
-                                                Mark as Serviced
-                                            </button>
-                                        )}
                                         <button
                                             className="details-toggle-btn"
                                             onClick={() => toggleExtraDetails(booking.code)}

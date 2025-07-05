@@ -341,7 +341,15 @@ const updateReservation = async (req, res) => {
             }
         }
 
-        // Update the reservation
+        // Format the date for email
+        const formatDate = (date) => {
+            return new Date(date).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        };
+
         const updatedReservation = await Reservation.findByIdAndUpdate(
             reservationId,
             {
@@ -386,20 +394,29 @@ const updateReservation = async (req, res) => {
         }
 
         // Send WebSocket notification
-        try {
-            const ws = new WebSocket(process.env.WS_URL);
-            ws.on('open', () => {
-                ws.send(JSON.stringify({
-                    type: 'reservationUpdated',
-                    restaurantId: existingReservation.restaurantId
-                }));
-                ws.close();
-            });
-        } catch (wsError) {
-            console.error('WebSocket notification error:', wsError);
-            // Continue with the response even if WebSocket fails
-        }
-
+        // try {
+        //     const ws = new WebSocket(process.env.WS_URL);
+        //     ws.on('open', () => {
+        //         ws.send(JSON.stringify({
+        //             type: 'reservationUpdated',
+        //             restaurantId: existingReservation.restaurantId
+        //         }));
+        //         ws.close();
+        //     });
+        // } catch (wsError) {
+        //     console.error('WebSocket notification error:', wsError);
+        //     // Continue with the response even if WebSocket fails
+        // }
+        const userData = await User.findOne({ _id: userId });
+        await sendBookingEmail(
+            userData.email, 
+            updatedReservation.restaurantId.name, 
+            formatDate(updatedReservation.date), // Format the date
+            updatedReservation.time, // Time is already in correct format
+            updatedReservation.tables, 
+            updatedReservation.entryCode, 
+            BookingUpdateTemplate
+        );
         res.status(200).json({ 
             message: "Reservation updated successfully",
             reservation: updatedReservation 

@@ -48,7 +48,7 @@ const UserDashboard = () => {
               </>
             }
           />
-          <Route path="cuisine/:type" element={<CuisinePage />} />
+          <Route path="cuisine/:type" element={<CuisinePage filteredLocation={filteredLocation} />} />
           <Route path="profile" element={<MyProfile />} />
           <Route path="bookings" element={<Bookings />} />
           <Route path="become-a-member" element={<BecomeMember />} />

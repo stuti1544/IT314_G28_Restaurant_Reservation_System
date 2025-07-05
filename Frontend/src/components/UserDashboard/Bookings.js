@@ -42,22 +42,22 @@ const Bookings = () => {
   const handleEdit = (booking) => {
     const formattedDate = new Date(booking.date).toISOString().split('T')[0];
     
-    navigate(`/user-dashboard/book-table/${booking.restaurantId._id}`, {
-      state: { 
-        isEditing: true,
-        reservationId: booking._id,
-        reservationData: {
-          _id: booking._id,
-          date: formattedDate,
-          time: booking.time,
-          tables: {
-            twoPerson: booking.tables.twoPerson,
-            fourPerson: booking.tables.fourPerson,
-            sixPerson: booking.tables.sixPerson
-          },
-          restaurantId: booking.restaurantId._id
+    navigate(`/user-dashboard/edit-booking/${booking.restaurantId._id}/${booking._id}`, {
+        state: { 
+            isEditing: true,
+            reservationId: booking._id,
+            reservationData: {
+                _id: booking._id,
+                date: formattedDate,
+                time: booking.time,
+                tables: {
+                    twoPerson: booking.tables.twoPerson,
+                    fourPerson: booking.tables.fourPerson,
+                    sixPerson: booking.tables.sixPerson
+                },
+                restaurantId: booking.restaurantId._id
+            }
         }
-      }
     });
   };
 
